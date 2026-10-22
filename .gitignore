@@ -1,0 +1,20 @@
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor settings
+.vscode/
+.idea/
+
+# Local environment / secrets (for the PHP phase)
+.env
+includes/config.php
+
+# Logs and temp files
+*.log
+*.tmp
+
+# Local database files
+*.sqlite
+*.db
