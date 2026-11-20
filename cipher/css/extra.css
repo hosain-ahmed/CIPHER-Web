@@ -1,0 +1,52 @@
+[hidden]{ display:none !important; }
+
+.small{ font-size:12px; letter-spacing:.04em; }
+.nav-logout{ margin-left:14px; color:#142135; }
+.header-left{ display:flex; align-items:center; gap:28px; flex-wrap:wrap; }
+
+.agent-stats{
+  padding:12px 16px;
+  background-color:#eff3ff;
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px 18px;
+}
+.agent-stats b{ color:#0645c0; font-weight:normal; }
+
+.filters{ align-items:center; flex-wrap:wrap; }
+.filters .btn{ flex:none; white-space:nowrap; }
+.filters .form-control{ min-width:140px; }
+
+.data-table td.num, .data-table th.num{ text-align:right; }
+.data-table .title-link{ font-weight:600; }
+.data-table tbody tr:hover{ background-color:#f4f7ff; }
+.status-solved{ color:#0b7a4b; font-weight:600; }
+.btn-solve{ padding:5px 12px; background-color:#e0eaff; color:#0645c0; border-color:#e0eaff; }
+.table-foot{ padding:12px; background-color:#eff3ff; }
+.pagination button{
+  padding:5px 10px; margin-left:2px;
+  border:0; background:white; font:inherit; cursor:pointer;
+}
+.pagination button.active{ background-color:#1d4ed8; color:white; }
+.pagination button:disabled{ color:#9aa3b5; cursor:default; }
+
+
+.info-card{ padding:16px; background:white; border:1px solid #c8cede; flex:1; }
+.info-card h3{ margin:8px 0; font-size:20px; }
+
+
+@media (max-width:760px){
+  .row, .columns{ flex-direction:column; align-items:stretch; }
+}
+
+.small-text{ font-size:13px; }
+.row-tight{ display:flex; align-items:center; gap:10px; }
+.subbar{ padding-bottom:14px; margin-bottom:22px; border-bottom:1px solid #c8cede; }
+.seg{ display:inline-flex; border:1px solid #c8cede; background:white; padding:2px; }
+.seg button{ padding:6px 14px; border:0; background:transparent; font:inherit; font-size:14px; color:#566174; cursor:pointer; }
+.seg button.active{ background:#eff3ff; color:#0645c0; font-weight:600; }
+.mission-desc{ max-width:880px; margin:18px 0; }
+.hint-box{ margin-top:12px; }
+.answer-row{ display:flex; gap:8px; max-width:680px; }
+.answer-row .form-control{ flex:1; }
+.alert-success{ background-color:#d5f5ef; border-color:#0f766e; color:#064e3b; }
