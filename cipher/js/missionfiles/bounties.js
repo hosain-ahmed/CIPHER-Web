@@ -5,14 +5,8 @@ const API = {
 
 const PAGE_SIZE =5;
 
-const MOCK_ME = { name: "0xK3Y_N0D3", coins: 65 };
-const MOCK_BOUNTIES = [
-  { id: 1,  title: "SQLite blind injection payload",       postedBy: "byte_runner", reward: 120, status: "open" },
-  { id: 2,  title: "State machine minimizer optimization", postedBy: "zero_alex",   reward: 80,  status: "open" },
-  { id: 3,  title: "Deobfuscate MIPS shellcode sample",    postedBy: "staff_admin", reward: 150, status: "open" },
-  { id: 4,  title: "Truncated hash collision solver",      postedBy: "node_sentry", reward: 100, status: "open" },
-  { id: 5,  title: "SHA-1 near-collision test vector",     postedBy: "u21_raskar",  reward: 200, status: "claimed" },
-];
+const MOCK_ME = CIPHER_DATA.me;
+const MOCK_BOUNTIES = CIPHER_DATA.bounties;
 
 const $ = (id) => document.getElementById(id);
 const state = { me: null, bounties: [], tab: "browse", page: 1 };
@@ -114,7 +108,7 @@ function wireEvents() {
 
 (async function init() {
   state.me = await getJSON(API.me, MOCK_ME);
-  state.bounties = await getJSON(API.bounties, MOCK_BOUNTIES);
+  state.bounties = CIPHER.bounties(await getJSON(API.bounties, MOCK_BOUNTIES));
   renderHeader();
   renderRows();
   wireEvents();

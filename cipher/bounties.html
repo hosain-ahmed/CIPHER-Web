@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Bounties | CIPHER</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="extra.css">
-  <link rel="stylesheet" href="dark.css"> 
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/extra.css">
+  <link rel="stylesheet" href="css/dark.css"> 
 </head>
 <body class="theme-dark">
 
@@ -15,9 +15,9 @@
       <div class="header-left">
         <a class="brand" href="index.html">CIPHER</a>
         <nav class="site-nav">
-          <a href="index.html">Missions</a>
-          <a class="active" href="market.html">Black Market</a>
-          <a href="log.html">Log</a>
+          <a href="missions.html">Missions</a>
+          <a class="active" href="blackmarket.html">Black Market</a>
+          <a href="logs.html">Log</a>
           <a href="leaderboard.html">Leaderboard</a>
           <a href="profile.html">Profile</a>
         </nav>
@@ -26,14 +26,14 @@
         Agent <span id="navAgent">-</span>
         <span class="dot">&middot;</span>
         <span class="accent" id="navCoins">0 Coins</span>
-        <a href="logout.html" class="nav-logout">Log out</a>
+        <a href="login.html" class="nav-logout">Log out</a>
       </div>
     </div>
   </header>
 
   <div class="subnav">
     <nav class="container site-nav mono">
-      <a href="market.html">Overview</a>
+      <a href="blackmarket.html">Overview</a>
       <a href="shop.html">Shop</a>
       <a class="active" href="bounties.html">Bounties</a>
     </nav>
@@ -44,7 +44,7 @@
       <h1>Bounties</h1>
       <div class="head-actions">
         <div class="balance plain mono">Balance: <strong class="accent" id="balance">0 Coins</strong></div>
-        <a class="btn btn-primary" href="post-bounty.html">+ Post bounty</a>
+        <a class="btn btn-primary" href="create.html?type=bounty">+ Post bounty</a>
       </div>
     </div>
 
@@ -96,6 +96,7 @@
     </div>
   </footer>
 
-  <script src="bounties.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/missionfiles/bounties.js"></script>
 </body>
 </html>

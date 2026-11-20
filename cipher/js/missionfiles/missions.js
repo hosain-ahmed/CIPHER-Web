@@ -10,17 +10,11 @@ const PAGE_SIZE =8;
 //MOCK DATA FOR FRONTEND PRESENTATION
 
 const MOCK = {
-  me: { name: "0xK3Y_N0D3", role: (function(){ try { return localStorage.getItem("cipherRole") || "admin"; } catch (e) { return "admin"; } })(), xp: 450, coins: 65 },
-  missions: [
-    { id: "C-101", title: "Caesar's First Shift", subtitle: "Affine & modular shift vectors", category: "Cryptography", difficulty: "Easy", xp: 50, coins: 15, solved: true },
-    { id: "B-204", title: "Header Traversal Injection", subtitle: "CRLF protocol desynchronization", category: "Web Security", difficulty: "Medium", xp: 120, coins: 40, solved: false },
-    { id: "L-302", title: "Boolean Satisfiability Gate", subtitle: "3-CNF formula solver & truth tables", category: "Logic", difficulty: "Medium", xp: 150, coins: 45, solved: true },
-    { id: "R-410", title: "ARM Thumb Disassembly Trace", subtitle: "Dynamic binary instrumentation & registers", category: "Reverse Engineering", difficulty: "Hard", xp: 280, coins: 90, solved: false },
-    { id: "F-108", title: "Pcap DNS Exfiltration Stream", subtitle: "Base32 tunnel payload reconstruction", category: "Forensics", difficulty: "Easy", xp: 60, coins: 20, solved: false },
-    { id: "C-105", title: "Vigenère Polyalphabetic Stream", subtitle: "Kasiski examination & index of coincidence", category: "Cryptography", difficulty: "Medium", xp: 140, coins: 35, solved: false },
-    { id: "W-202", title: "Cookie Tampering & Deserialization", subtitle: "Python pickle gadget chains execution", category: "Web Security", difficulty: "Hard", xp: 250, coins: 80, solved: false },
-    { id: "L-305", title: "Finite State Machine Reachability", subtitle: "NFA to DFA state minimization", category: "Logic", difficulty: "Easy", xp: 75, coins: 25, solved: true },
-  ],
+  me: {
+    ...CIPHER_DATA.me,
+    role: (function(){ try { return localStorage.getItem("cipherRole") || "admin"; } catch (e) { return "admin"; } })(),
+  },
+  missions: CIPHER_DATA.missions,
 };
 
 //State of the progress
@@ -32,7 +26,7 @@ const $ = (id) => document.getElementById(id);
 
 function esc(s){
     return String(s).replace(/[&<>"'"]/g, (c)=>
-    ({"&": "&amp;", "<": "&alt;", ">":"&gt;", '"': "&quot;" , "'" : "&#39;"}[c]));
+    ({"&": "&amp;", "<": "&lt;", ">":"&gt;", '"': "&quot;" , "'" : "&#39;"}[c]));
 }
 
 async function getJSON(url,fallback){
@@ -142,13 +136,13 @@ function wireEvents() {
   });
 
   $("btnCreate").addEventListener("click", () => {
-    window.location.href = "create-mission.html";
+    window.location.href = "create.html?type=mission";
   });
 }
 
 (async function init() {
   state.me = await getJSON(API.me, MOCK.me);
-  state.missions = await getJSON(API.missions, MOCK.missions);
+  state.missions = CIPHER.missions(await getJSON(API.missions, MOCK.missions));
 
   applyRole();
   fillCategoryDropdown();
