@@ -96,10 +96,18 @@ form.addEventListener("submit", function (event) {
   };
   console.log("Registering:", newUser);
 
-  successMessage.textContent = "Account created. Welcome, " + newUser.codename + "!";
+  try {
+    localStorage.setItem("cipherRegisteredCodename", newUser.codename);
+  } catch (e) {}
+
+  successMessage.textContent = "Account created. Redirecting to sign in...";
   form.reset();
   document.querySelectorAll("input").forEach(function (input) {
     input.classList.remove("valid", "invalid");
   });
   codenameStatus.textContent = "";
+
+  setTimeout(function () {
+    window.location.href = "login.html";
+  }, 900);
 });

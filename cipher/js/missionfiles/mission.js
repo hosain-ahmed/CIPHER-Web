@@ -54,6 +54,14 @@ function showAlert(id, ok, msg) {
   box.hidden = false;
 }
 
+function showNotice(id, msg) {
+  const box = $(id);
+  if (!box) return;
+  box.className = "alert alert-info";
+  box.textContent = msg;
+  box.hidden = false;
+}
+
 function renderMission(mission) {
   document.title = `${mission.id} | CIPHER`;
   setText("mTitle", `${mission.id}: ${mission.title}`);
@@ -77,6 +85,13 @@ function wireClaim(bounty) {
   const btn = $("btnClaim");
   if (!btn) return;
 
+  if (!CIPHER.isLoggedIn()) {
+    btn.disabled = false;
+    btn.textContent = "Log in to claim";
+    btn.onclick = () => { location.href = "login.html"; };
+    return;
+  }
+
   const isMine = String(bounty.postedBy || "").toLowerCase() === String(me.name || "").toLowerCase();
   const claimed = bounty.status === "claimed";
 
@@ -93,6 +108,14 @@ function wireClaim(bounty) {
 }
 
 function wireMission(mission) {
+  const loggedIn = CIPHER.isLoggedIn();
+  if (!loggedIn) {
+    $("answer").disabled = true;
+    const submit = $("answerForm").querySelector('button[type="submit"]');
+    if (submit) submit.disabled = true;
+    showNotice("result", "Log in to submit an answer.");
+  }
+
   $("btnHint").addEventListener("click", () => {
     const box = $("mHint");
     box.hidden = !box.hidden;
@@ -101,6 +124,10 @@ function wireMission(mission) {
 
   $("answerForm").addEventListener("submit", async (e) => {
     e.preventDefault();
+    if (!CIPHER.isLoggedIn()) {
+      showNotice("result", "Log in to submit an answer.");
+      return;
+    }
     const answer = $("answer").value.trim();
     if (!answer) return;
 
@@ -113,18 +140,24 @@ function wireMission(mission) {
       });
       if (!res.ok) throw new Error(res.status);
       const data = await res.json();
+      if (data.correct) CIPHER.markSolved(mission.id);
       showAlert("result", data.correct, data.message || (data.correct ? "Correct!" : "Incorrect, try again."));
     } catch (err) {
       const local = CIPHER.findMission(mission.id);
       const expected = mission.answer || (local && local.answer);
       const ok = expected && answer.toUpperCase() === String(expected).toUpperCase();
+      if (ok) CIPHER.markSolved(mission.id);
       showAlert("result", !!ok, ok ? `Correct! +${mission.xp} XP, +${mission.coins} coins.` : "Incorrect, try again.");
     }
   });
 
-  $("btnEdit").addEventListener("click", () => { location.href = "missions.html"; });
+  $("btnEdit").addEventListener("click", () => {
+    location.href = "create.html?type=mission&id=" + encodeURIComponent(mission.id);
+  });
   $("btnDelete").addEventListener("click", () => {
-    if (confirm("Delete this mission?")) { location.href = "missions.html"; }
+    if (!confirm("Delete this mission?")) return;
+    CIPHER.deleteMission(mission.id);
+    location.href = "missions.html";
   });
 }
 
@@ -164,12 +197,17 @@ async function initBounty(id) {
 
 (async function init() {
   const id = new URLSearchParams(location.search).get("id");
-  me = await getJSON(API.me, {
+  me = CIPHER.me(await getJSON(API.me, {
     ...CIPHER_DATA.me,
     role: getRole() || "admin",
-  });
+  }));
   setText("navAgent", me.name);
   applyRole();
+
+  if (!CIPHER.isLoggedIn()) {
+    const switcher = $("roleSwitch");
+    if (switcher) switcher.hidden = true;
+  }
 
   if (!id) return showError(`No ${TYPE} selected. Go back and pick one.`);
 
@@ -177,7 +215,7 @@ async function initBounty(id) {
   else await initMission(id);
 
   const switcher = $("roleSwitch");
-  if (switcher) {
+  if (switcher && CIPHER.isLoggedIn()) {
     switcher.addEventListener("click", (e) => {
       const b = e.target.closest("button[data-role]");
       if (!b) return;

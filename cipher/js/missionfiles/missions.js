@@ -25,7 +25,7 @@ const $ = (id) => document.getElementById(id);
 //Helper Functions
 
 function esc(s){
-    return String(s).replace(/[&<>"'"]/g, (c)=>
+    return String(s).replace(/[&<>"']/g, (c)=>
     ({"&": "&amp;", "<": "&lt;", ">":"&gt;", '"': "&quot;" , "'" : "&#39;"}[c]));
 }
 
@@ -41,6 +41,10 @@ async function getJSON(url,fallback){
     }
 }
 
+function isSolved(mission) {
+    return CIPHER.isLoggedIn() && CIPHER.isSolved(mission.id);
+}
+
 function getFiltered(){
     const q = $("fSearch").value.trim().toLowerCase();
     const cat = $("fCategory").value;
@@ -51,13 +55,13 @@ function getFiltered(){
         if (q && !(m.title.toLowerCase().includes(q) || m.id.toLowerCase().includes(q))) return false;
         if (cat && m.category !== cat) return false;
         if (diff && m.difficulty !== diff) return false;
-        if (st && (st === "solved") !== m.solved) return false;
+        if (st && (st === "solved") !== isSolved(m)) return false;
         return true;
     });
 }
 
 function renderStats(){
-    const solved = state.missions.filter((m)=> m.solved).length;
+    const solved = state.missions.filter(isSolved).length;
     $("navAgent").textContent = state.me.name;
     $("agentStats").innerHTML= 
     `<span>AGENT : <b>${esc(state.me.name)}</b></span>`+
@@ -85,7 +89,7 @@ function renderRows() {
         <td><span class="badge badge-${esc(m.difficulty.toLowerCase())}">${esc(m.difficulty.toUpperCase())}</span></td>
         <td class="num">${esc(m.xp)}</td>
         <td class="num text-negative">${esc(m.coins)}</td>
-        <td>${m.solved
+        <td>${isSolved(m)
           ? '<span class="status-solved">&#10003; SOLVED</span>'
           : `<a class="btn btn-solve" href="mission.html?id=${encodeURIComponent(m.id)}">Solve &rarr;</a>`}</td>
       </tr>`).join("")
@@ -141,7 +145,7 @@ function wireEvents() {
 }
 
 (async function init() {
-  state.me = await getJSON(API.me, MOCK.me);
+  state.me = CIPHER.me(await getJSON(API.me, MOCK.me));
   state.missions = CIPHER.missions(await getJSON(API.missions, MOCK.missions));
 
   applyRole();

@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CIPHER Challenge Platform</title>
   <style>
     /* Basic Page Reset */
@@ -47,6 +48,9 @@
       padding: 8px 16px;
       cursor: pointer;
       border-radius: 4px;
+      display: inline-block;
+      text-decoration: none;
+      text-align: center;
     }
 
     .btn-outline {
@@ -56,6 +60,9 @@
       padding: 8px 16px;
       cursor: pointer;
       border-radius: 4px;
+      display: inline-block;
+      text-decoration: none;
+      text-align: center;
     }
 
     /* Hero Section */
@@ -203,16 +210,16 @@
   <!-- Navigation Bar -->
   <header>
     <div>
-      <strong style="margin-right: 20px;">CIPHER</strong>
+      <a href="index.html" style="margin-right: 20px; text-decoration: none; color: inherit;"><strong>CIPHER</strong></a>
       <span class="nav-links">
-        <a href="#" class="active">Welcome</a>
-        <a href="#">Missions</a>
-        <a href="#">Leaderboard</a>
+        <a href="index.html" class="active">Welcome</a>
+        <a href="missions.html">Missions</a>
+        <a href="leaderboard.html">Leaderboard</a>
       </span>
     </div>
     <div>
-      <a href="#" style="margin-right: 15px; text-decoration: none; color: #333;">Log in</a>
-      <button class="btn-blue" onclick="showAlert('Account Creation')">Create account</button>
+      <a href="login.html" style="margin-right: 15px; text-decoration: none; color: #333;">Log in</a>
+      <a class="btn-blue" href="register.html">Create account</a>
     </div>
   </header>
 
@@ -221,8 +228,8 @@
     <div class="hero-text">
       <h1>A little curiosity.<br>A good challenge.</h1>
       <p>Crack ciphers, untangle binary messages, and solve problems that make you think.</p>
-      <button class="btn-blue" onclick="showAlert('Create Account Clicked')">Create an account</button>
-      <button class="btn-outline" onclick="showAlert('Explore Missions Clicked')">Explore missions</button>
+      <a class="btn-blue" href="register.html">Create an account</a>
+      <a class="btn-outline" href="missions.html">Explore missions</a>
     </div>
 
     <div class="hero-card">
@@ -272,29 +279,29 @@
       </thead>
       <tbody>
         <tr>
-          <td style="color: #1a56db; font-weight: bold;">C-101</td>
-          <td>Caesar's First Shift</td>
+          <td style="color: #1a56db; font-weight: bold;"><a href="mission.html?id=C-101" style="color: inherit; text-decoration: none;">C-101</a></td>
+          <td><a href="mission.html?id=C-101" style="color: inherit; text-decoration: none;">Caesar's First Shift</a></td>
           <td>Cryptography</td>
           <td><span class="badge-easy">Easy</span></td>
           <td>50 XP · 15 Coins</td>
         </tr>
         <tr>
-          <td style="color: #1a56db; font-weight: bold;">B-204</td>
-          <td>Header Traversal Injection</td>
+          <td style="color: #1a56db; font-weight: bold;"><a href="mission.html?id=B-204" style="color: inherit; text-decoration: none;">B-204</a></td>
+          <td><a href="mission.html?id=B-204" style="color: inherit; text-decoration: none;">Header Traversal Injection</a></td>
           <td>Web Security</td>
           <td><span class="badge-medium">Medium</span></td>
           <td>120 XP · 40 Coins</td>
         </tr>
         <tr>
-          <td style="color: #1a56db; font-weight: bold;">L-302</td>
-          <td>Boolean Satisfiability Gate</td>
+          <td style="color: #1a56db; font-weight: bold;"><a href="mission.html?id=L-302" style="color: inherit; text-decoration: none;">L-302</a></td>
+          <td><a href="mission.html?id=L-302" style="color: inherit; text-decoration: none;">Boolean Satisfiability Gate</a></td>
           <td>Logic</td>
           <td><span class="badge-medium">Medium</span></td>
           <td>150 XP · 45 Coins</td>
         </tr>
         <tr>
-          <td style="color: #1a56db; font-weight: bold;">R-410</td>
-          <td>ARM Thumb Disassembly Trace</td>
+          <td style="color: #1a56db; font-weight: bold;"><a href="mission.html?id=R-410" style="color: inherit; text-decoration: none;">R-410</a></td>
+          <td><a href="mission.html?id=R-410" style="color: inherit; text-decoration: none;">ARM Thumb Disassembly Trace</a></td>
           <td>Reverse Engineering</td>
           <td><span class="badge-hard">Hard</span></td>
           <td>280 XP · 90 Coins</td>
@@ -307,19 +314,8 @@
   <footer>
     <div><strong>CIPHER</strong> Challenge Platform</div>
     <div>
-      <a href="#">About</a>
-      <a href="#">Format Standards</a>
-      <a href="#">Rules</a>
     </div>
   </footer>
-
-  <!-- JavaScript -->
-  <script>
-    // Viva Explaination: Simple function to handle button clicks
-    function showAlert(message) {
-      alert("Action: " + message);
-    }
-  </script>
 
 </body>
 </html>

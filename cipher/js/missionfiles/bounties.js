@@ -42,6 +42,9 @@ function renderHeader() {
   $("navAgent").textContent = state.me.name;
   $("navCoins").textContent = text;
   $("balance").textContent = text;
+
+  const post = document.querySelector('a.btn-primary[href^="create.html"]');
+  if (post) post.hidden = !CIPHER.isLoggedIn();
 }
 
 function renderRows() {
@@ -107,7 +110,7 @@ function wireEvents() {
 }
 
 (async function init() {
-  state.me = await getJSON(API.me, MOCK_ME);
+  state.me = CIPHER.me(await getJSON(API.me, MOCK_ME));
   state.bounties = CIPHER.bounties(await getJSON(API.bounties, MOCK_BOUNTIES));
   renderHeader();
   renderRows();

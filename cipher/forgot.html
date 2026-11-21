@@ -272,7 +272,7 @@
         </form>
 
         <div class="cancel-box">
-            <a href="#" class="cancel-link" onclick="cancelAction(event)">
+            <a href="login.html" class="cancel-link">
                 <i class="fa-solid fa-arrow-left"></i> Cancel and Return to Login
             </a>
         </div>
@@ -306,11 +306,6 @@
             }, 800);
         }
 
-        function cancelAction(event) {
-            event.preventDefault();
-            document.getElementById('status').innerText = "STATUS: CANCELLED";
-            alert("Returning to login page!");
-        }
     </script>
 </body>
 </html>

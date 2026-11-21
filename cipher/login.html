@@ -130,7 +130,7 @@
   <div class="card">
     
     <div class="card-header">
-      <span>CIPHER v4.2.0</span>
+      <a href="index.html" style="color: inherit; text-decoration: none;">CIPHER v4.2.0</a>
       <small>AGENT AUTHENTICATION</small>
     </div>
 
@@ -138,7 +138,7 @@
       <h2>Agent Sign In</h2>
       <p style="font-size: 12px; color: #555;">Enter credentials to access missions.</p>
 
-      <div class="alert" id="errorBox">
+      <div class="alert" id="errorBox" style="display: none;">
         <span class="close-btn" onclick="hideAlert()">×</span>
         <strong>Authentication failed</strong><br>
         Codename or password does not match.
@@ -148,7 +148,7 @@
         
         <div class="form-group">
           <label><span>CODENAME</span><small>ASCII_ID</small></label>
-          <input type="text" value="zero_trace" required>
+          <input type="text" id="codenameInput" value="zero_trace" required>
         </div>
 
         <div class="form-group">
@@ -161,7 +161,7 @@
 
         <div class="options">
           <label><input type="checkbox" checked> Remember workstation</label>
-          <a href="#">Forgot Password?</a>
+          <a href="forgot.html">Forgot Password?</a>
         </div>
 
         <button type="submit" class="btn">Log In to CIPHER</button>
@@ -173,13 +173,18 @@
     </div>
 
     <div class="card-footer">
-      <span>New? <a href="#">Register</a></span>
+      <span>New? <a href="register.html">Register</a></span>
       <span>RULES • STATUS</span>
     </div>
 
   </div>
 
+  <script src="js/data.js"></script>
   <script>
+    if (new URLSearchParams(location.search).get("logout") === "1" && window.CIPHER) {
+      CIPHER.logout();
+    }
+
     function togglePass() {
       var passInput = document.getElementById("passInput");
       if (passInput.type === "password") {
@@ -195,8 +200,20 @@
 
     function submitForm(event) {
       event.preventDefault();
-      alert("Form Submitted!");
+      const codename = document.getElementById("codenameInput");
+      const password = document.getElementById("passInput");
+      if (!codename.value.trim() || !password.value.trim()) {
+        document.getElementById("errorBox").style.display = "block";
+        return;
+      }
+      if (window.CIPHER) CIPHER.login(codename.value.trim());
+      window.location.href = "missions.html";
     }
+
+    try {
+      const registered = localStorage.getItem("cipherRegisteredCodename");
+      if (registered) document.getElementById("codenameInput").value = registered;
+    } catch (e) {}
   </script>
 
 </body>

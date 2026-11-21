@@ -5,7 +5,10 @@ const API = {
 };
 
 const $ = (id) => document.getElementById(id);
-const IS_BOUNTY = new URLSearchParams(location.search).get("type") === "bounty";
+const PARAMS = new URLSearchParams(location.search);
+const IS_BOUNTY = PARAMS.get("type") === "bounty";
+const EDIT_ID = IS_BOUNTY ? null : PARAMS.get("id");
+const IS_EDIT = Boolean(EDIT_ID);
 const TYPE = IS_BOUNTY ? "bounty" : "mission";
 const LIST_PAGE = IS_BOUNTY ? "bounties.html" : "missions.html";
 
@@ -45,6 +48,14 @@ function applyType() {
   $("backLink").textContent = IS_BOUNTY ? "← Back to Bounties" : "← Back to Missions";
   $("cancelLink").href = LIST_PAGE;
 
+  if (IS_EDIT) {
+    document.title = "Edit Mission | CIPHER";
+    $("createTitle").textContent = "Edit mission";
+    $("createIntro").textContent = "Update the mission details and save your changes.";
+    $("btnSubmit").textContent = "Save changes";
+    $("fMissionId").readOnly = true;
+  }
+
   document.querySelectorAll("[data-for]").forEach((group) => {
     const active = group.dataset.for === TYPE;
     group.hidden = !active;
@@ -58,19 +69,25 @@ function buildMission() {
   const id = $("fMissionId").value.trim().toUpperCase();
   const title = $("fTitle").value.trim();
   const description = $("fDesc").value.trim();
-  const xp = Number($("fXp").value);
-  const coins = Number($("fCoins").value);
+  const xpValue = $("fXp").value.trim();
+  const coinsValue = $("fCoins").value.trim();
+  const xp = Number(xpValue);
+  const coins = Number(coinsValue);
   const answer = $("fAnswer").value.trim();
 
   if (!id) return showError("Mission ID is required.");
   if (!title) return showError("Title is required.");
   if (!description) return showError("Description is required.");
   if (!answer) return showError("Expected answer is required.");
+  if (!xpValue) return showError("XP is required.");
+  if (!coinsValue) return showError("Coins are required.");
   if (!Number.isFinite(xp) || xp < 0) return showError("XP must be a non-negative number.");
   if (!Number.isFinite(coins) || coins < 0) return showError("Coins must be a non-negative number.");
-  if (CIPHER.missions().some((mission) => String(mission.id).toLowerCase() === id.toLowerCase())) {
-    return showError("That mission ID already exists.");
-  }
+  const duplicate = CIPHER.missions().some((mission) =>
+    String(mission.id).toLowerCase() === id.toLowerCase() &&
+    (!IS_EDIT || String(mission.id).toLowerCase() !== String(EDIT_ID).toLowerCase())
+  );
+  if (duplicate) return showError("That mission ID already exists.");
 
   return {
     id,
@@ -80,7 +97,6 @@ function buildMission() {
     difficulty: $("fDifficulty").value,
     xp,
     coins,
-    solved: false,
     description,
     payload: $("fPayload").value.trim(),
     hint: $("fHint").value.trim(),
@@ -107,6 +123,20 @@ function buildBounty() {
   };
 }
 
+function fillMission(mission) {
+  $("fMissionId").value = mission.id || "";
+  $("fTitle").value = mission.title || "";
+  $("fSubtitle").value = mission.subtitle || "";
+  $("fCategory").value = mission.category || "Cryptography";
+  $("fDifficulty").value = mission.difficulty || "Easy";
+  $("fXp").value = mission.xp ?? 0;
+  $("fCoins").value = mission.coins ?? 0;
+  $("fDesc").value = mission.description || "";
+  $("fPayload").value = mission.payload || "";
+  $("fHint").value = mission.hint || "";
+  $("fAnswer").value = mission.answer || "";
+}
+
 async function save(item) {
   const url = IS_BOUNTY ? API.bounties : API.missions;
   try {
@@ -129,8 +159,22 @@ async function save(item) {
 
 (async function init() {
   applyType();
-  me = await getJSON(API.me, me);
+  me = CIPHER.me(await getJSON(API.me, me));
   $("navAgent").textContent = me.name;
+
+  if (!CIPHER.isLoggedIn()) {
+    showError("Log in to create a mission or post a bounty.");
+    $("createForm").querySelectorAll("input, select, textarea, button").forEach((field) => {
+      field.disabled = true;
+    });
+    return;
+  }
+
+  if (IS_EDIT) {
+    const mission = CIPHER.findMission(EDIT_ID);
+    if (!mission) return showError("Mission not found.");
+    fillMission(mission);
+  }
 
   $("createForm").addEventListener("submit", async (e) => {
     e.preventDefault();

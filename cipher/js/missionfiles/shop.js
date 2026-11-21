@@ -4,7 +4,7 @@ const API = {
   buy:   "/api/buy",   
 };
 
-const MOCK_ME = { name: "0xK3Y_N0D3", coins: 65 };
+const MOCK_ME = CIPHER_DATA.me;
 const MOCK_ITEMS = [
   { id: 1, name: "Ghost Protocol", effect: "Hide your activity and solve attempts from public logs for 24 hours.", price: 40 },
   { id: 2, name: "Mission Skip",   effect: "Unlock the next mission without completing the prerequisite challenge.", price: 50 },
@@ -44,6 +44,7 @@ function renderRows() {
   $("shopRows").innerHTML = state.items.length
     ? state.items.map((it) => {
         const cantAfford = it.price > state.me.coins;
+        const unavailable = !CIPHER.isLoggedIn() ? "Log in to buy" : cantAfford ? "Not enough coins" : "";
         return `
         <tr>
           <td class="item-name">${esc(it.name)}</td>
@@ -51,7 +52,7 @@ function renderRows() {
           <td class="num mono">${esc(it.price)} Coins</td>
           <td class="num">
             <button class="btn btn-primary btn-buy" data-id="${esc(it.id)}"
-              ${cantAfford ? 'disabled title="Not enough coins"' : ""}>Buy</button>
+              ${unavailable ? `disabled title="${unavailable}"` : ""}>Buy</button>
           </td>
         </tr>`;
       }).join("")
@@ -67,6 +68,10 @@ function showMsg(ok, text) {
 
 
 async function buy(itemId) {
+  if (!CIPHER.isLoggedIn()) {
+    return showMsg(false, "Log in to buy items.");
+  }
+
   const item = state.items.find((i) => String(i.id) === String(itemId));
   if (!item) return;
 
@@ -97,7 +102,7 @@ async function buy(itemId) {
 
 
 (async function init() {
-  state.me = await getJSON(API.me, MOCK_ME);
+  state.me = CIPHER.me(await getJSON(API.me, MOCK_ME));
   state.items = await getJSON(API.items, MOCK_ITEMS);
   renderBalance();
   renderRows();
