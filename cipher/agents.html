@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CIPHER Agents</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+    <b>CIPHER</b>
+    <a href="index.html">Dashboard</a>
+    <a href="leaderboard.html">Leaderboard</a>
+    <a href="agents.html">Agents</a>
+    <a href="log.html">Log</a>
+</nav>
+
+<h1>Agents</h1>
+
+<!-- Add User Button -->
+<button onclick="addUser()">+ Add User</button>
+
+<!-- Search -->
+<input type="text" id="search"
+       placeholder="Search codename..."
+       onkeyup="searchUser()">
+
+<!-- Role Filter -->
+<select id="role" onchange="filterRole()">
+    <option value="All">All Roles</option>
+    <option value="Agent">Agent</option>
+    <option value="Admin">Admin</option>
+</select>
+
+<!-- Agents Table -->
+<table id="agents">
+    <tr>
+        <th>Codename</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+    <tr>
+        <td>zero_alex</td>
+        <td>a.wright@university.edu</td>
+        <td>Agent</td>
+        <td>Active</td>
+        <td><button onclick="manageUser(this)">Manage</button></td>
+    </tr>
+
+    <tr>
+        <td>u21_raskar</td>
+        <td>p.raskar@cs.edu</td>
+        <td>Agent</td>
+        <td>Active</td>
+        <td><button onclick="manageUser(this)">Manage</button></td>
+    </tr>
+
+    <tr>
+        <td>byte_runner</td>
+        <td>m.vance@tech.edu</td>
+        <td>Agent</td>
+        <td>Active</td>
+        <td><button onclick="manageUser(this)">Manage</button></td>
+    </tr>
+
+    <tr>
+        <td>syn_ack</td>
+        <td>e.cole@university.edu</td>
+        <td>Agent</td>
+        <td>Active</td>
+        <td><button onclick="manageUser(this)">Manage</button></td>
+    </tr>
+
+    <tr>
+        <td>shadow_byte</td>
+        <td>temp_mail_88@proton.me</td>
+        <td>Agent</td>
+        <td>Locked</td>
+        <td><button onclick="manageUser(this)">Manage</button></td>
+    </tr>
+
+    <tr>
+        <td>staff_admin</td>
+        <td>admin@cipher.platform</td>
+        <td>Admin</td>
+        <td>Active</td>
+        <td><button onclick="manageUser(this)">Manage</button></td>
+    </tr>
+</table>
+
+<footer>
+    CIPHER | Web Technologies Project
+</footer>
+<script src="script.js"></script>
+
+</body>
+</html>
