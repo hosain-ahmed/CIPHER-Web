@@ -1,6 +1,3 @@
-
-/* CIPHER - Simple JavaScript */
-
 // Leaderboard Search
 function searchAgent() {
 
