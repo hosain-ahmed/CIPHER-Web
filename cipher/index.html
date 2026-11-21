@@ -65,6 +65,22 @@
       text-align: center;
     }
 
+    .auth-area {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .auth-area a {
+      color: #333;
+      text-decoration: none;
+    }
+
+    .auth-agent {
+      font-size: 14px;
+      color: #333;
+    }
+
     /* Hero Section */
     .hero {
       display: flex;
@@ -217,8 +233,8 @@
         <a href="leaderboard.html">Leaderboard</a>
       </span>
     </div>
-    <div>
-      <a href="login.html" style="margin-right: 15px; text-decoration: none; color: #333;">Log in</a>
+    <div id="authArea" class="auth-area">
+      <a href="login.html">Log in</a>
       <a class="btn-blue" href="register.html">Create account</a>
     </div>
   </header>
@@ -228,7 +244,7 @@
     <div class="hero-text">
       <h1>A little curiosity.<br>A good challenge.</h1>
       <p>Crack ciphers, untangle binary messages, and solve problems that make you think.</p>
-      <a class="btn-blue" href="register.html">Create an account</a>
+      <a id="heroPrimary" class="btn-blue" href="register.html">Create an account</a>
       <a class="btn-outline" href="missions.html">Explore missions</a>
     </div>
 
@@ -317,5 +333,27 @@
     </div>
   </footer>
 
+  <script src="js/data.js"></script>
+  <script>
+    (function () {
+      if (!window.CIPHER || !CIPHER.isLoggedIn()) return;
+
+      function esc(value) {
+        return String(value).replace(/[&<>"']/g, function (c) {
+          return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+        });
+      }
+
+      const me = CIPHER.me();
+      document.getElementById("authArea").innerHTML =
+        `<span class="auth-agent">AGENT <strong>${esc(me.name)}</strong> &middot; ${esc(me.coins)} Coins</span>
+         <a href="profile.html">Profile</a>
+         <a href="login.html?logout=1">Log out</a>`;
+
+      const hero = document.getElementById("heroPrimary");
+      hero.textContent = "Continue missions";
+      hero.href = "missions.html";
+    })();
+  </script>
 </body>
 </html>
