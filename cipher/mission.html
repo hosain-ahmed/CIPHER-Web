@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mission | CIPHER</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/extra.css">
+</head>
+<body data-type="mission">
+
+  <header class="site-header">
+    <div class="container row">
+      <div class="header-left">
+        <a class="brand" href="index.html">CIPHER</a>
+        <nav class="site-nav">
+          <a class="active" href="missions.html">Missions</a>
+          <a href="blackmarket.html">Black Market</a>
+          <a href="dashboard.html">Dashboard</a>
+          <a href="leaderboard.html">Leaderboard</a>
+          <a data-admin href="agents.html">Agents</a>
+          <a href="logs.html">Log</a>
+          <a href="profile.html">Profile</a>
+        </nav>
+      </div>
+      <div class="mono muted">
+        AGENT <span id="navAgent">-</span>
+        <a href="login.html?logout=1" class="nav-logout">Log out</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container page">
+
+    <div class="subbar row">
+      <a href="missions.html">&larr; Back to Missions</a>
+      <div class="row-tight">
+        <span class="muted small-text">Role:</span>
+        <div class="seg" id="roleSwitch">
+          <button type="button" data-role="user">Agent</button>
+          <button type="button" data-role="admin">Admin</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="missionError" class="alert alert-error" hidden></div>
+
+    <article id="missionBody" hidden>
+      <h1 id="mTitle"></h1>
+      <p class="muted" id="mMeta"></p>
+      <p class="mission-desc" id="mDesc"></p>
+
+      <div class="code-block" id="mPayload"></div>
+
+      <div class="section">
+        <button class="btn" id="btnHint" type="button">Show hint</button>
+        <div class="alert alert-info hint-box" id="mHint" hidden></div>
+      </div>
+
+      <form class="section" id="answerForm" autocomplete="off">
+        <div class="form-group">
+          <label for="answer">Your answer:</label>
+          <div class="answer-row">
+            <input class="form-control" id="answer" name="answer" placeholder="Enter decrypted message" required>
+            <button class="btn btn-primary" type="submit">Submit answer</button>
+          </div>
+        </div>
+        <div id="result" hidden></div>
+      </form>
+
+      <section class="panel section" data-admin hidden>
+        <div class="mono muted small-text">ADMIN</div>
+        <p class="muted">Manage this mission.</p>
+        <button class="btn" id="btnEdit" type="button">Edit mission</button>
+        <button class="btn" id="btnDelete" type="button">Delete mission</button>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container row">
+      <strong>CIPHER</strong>
+      <nav class="footer-links"><a href="#">About</a><a href="#">Rules</a></nav>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/missionfiles/mission.js"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CIPHER Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/extra.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container row">
+        <div class="header-left">
+            <a class="brand" href="index.html">CIPHER</a>
+            <nav class="site-nav">
+                <a href="missions.html">Missions</a>
+                <a href="blackmarket.html">Black Market</a>
+                <a class="active" href="dashboard.html">Dashboard</a>
+                <a href="leaderboard.html">Leaderboard</a>
+                <a data-admin href="agents.html">Agents</a>
+                <a href="logs.html">Log</a>
+                <a href="profile.html">Profile</a>
+            </nav>
+        </div>
+        <div class="mono muted">
+            AGENT <span id="navAgent">-</span>
+            <a href="login.html?logout=1" class="nav-logout">Log out</a>
+        </div>
+    </div>
+</header>
+
+<h1>Dashboard</h1>
+
+<!-- Dashboard Cards -->
+<div class="cards">
+    <div class="card">
+        <h1>142</h1>
+        <p>Total Agents</p>
+    </div>
+
+    <div class="card">
+        <h1>24</h1>
+        <p>Total Missions</p>
+    </div>
+
+    <div class="card">
+        <h1>18</h1>
+        <p>Missions Solved Today</p>
+    </div>
+</div>
+
+<h2>Recent Activity</h2>
+
+<table>
+    <tr>
+        <th>Time</th>
+        <th>Agent</th>
+        <th>Activity</th>
+    </tr>
+
+    <tr>
+        <td>2 mins ago</td>
+        <td>byte_runner</td>
+        <td>Solved Caesar's First Shift</td>
+    </tr>
+
+    <tr>
+        <td>7 mins ago</td>
+        <td>syn_ack</td>
+        <td>Submitted Solution</td>
+    </tr>
+
+    <tr>
+        <td>15 mins ago</td>
+        <td>new_user_99</td>
+        <td>Created Account</td>
+    </tr>
+</table>
+
+<h2>Top Agents</h2>
+
+<table>
+    <tr>
+        <th>Rank</th>
+        <th>Agent</th>
+        <th>XP</th>
+    </tr>
+
+    <tr>
+        <td>1</td>
+        <td>zero_alex</td>
+        <td>2450</td>
+    </tr>
+
+    <tr>
+        <td>2</td>
+        <td>byte_runner</td>
+        <td>2180</td>
+    </tr>
+
+    <tr>
+        <td>3</td>
+        <td>null_pointer</td>
+        <td>1940</td>
+    </tr>
+</table>
+
+<footer>
+    CIPHER | Web Technologies Project
+</footer>
+<script src="js/data.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

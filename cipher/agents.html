@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CIPHER Agents</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/extra.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container row">
+        <div class="header-left">
+            <a class="brand" href="index.html">CIPHER</a>
+            <nav class="site-nav">
+                <a href="missions.html">Missions</a>
+                <a href="blackmarket.html">Black Market</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="leaderboard.html">Leaderboard</a>
+                <a class="active" data-admin href="agents.html">Agents</a>
+                <a href="logs.html">Log</a>
+                <a href="profile.html">Profile</a>
+            </nav>
+        </div>
+        <div class="mono muted">
+            AGENT <span id="navAgent">-</span>
+            <a href="login.html?logout=1" class="nav-logout">Log out</a>
+        </div>
+    </div>
+</header>
+
+<h1>Agents</h1>
+
+<!-- Add User Button -->
+<button onclick="addUser()">+ Add User</button>
+
+<!-- Search -->
+<input type="text" id="search"
+       placeholder="Search codename..."
+       onkeyup="searchUser()">
+
+<!-- Role Filter -->
+<select id="role" onchange="filterRole()">
+    <option value="All">All Roles</option>
+    <option value="Agent">Agent</option>
+    <option value="Admin">Admin</option>
+</select>
+
+<!-- Agents Table -->
+<table id="agents">
+    <tr>
+        <th>Codename</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+    <tr>
+        <td>zero_alex</td>
+        <td>a.wright@university.edu</td>
+        <td>Agent</td>
+        <td>Active</td>
+        <td><button onclick="manageUser(this)">Manage</button></td>
+    </tr>
+
+    <tr>
+        <td>u21_raskar</td>
+        <td>p.raskar@cs.edu</td>
+        <td>Agent</td>
+        <td>Active</td>
+        <td><button onclick="manageUser(this)">Manage</button></td>
+    </tr>
+
+    <tr>
+        <td>byte_runner</td>
+        <td>m.vance@tech.edu</td>
+        <td>Agent</td>
+        <td>Active</td>
+        <td><button onclick="manageUser(this)">Manage</button></td>
+    </tr>
+
+    <tr>
+        <td>syn_ack</td>
+        <td>e.cole@university.edu</td>
+        <td>Agent</td>
+        <td>Active</td>
+        <td><button onclick="manageUser(this)">Manage</button></td>
+    </tr>
+
+    <tr>
+        <td>shadow_byte</td>
+        <td>temp_mail_88@proton.me</td>
+        <td>Agent</td>
+        <td>Locked</td>
+        <td><button onclick="manageUser(this)">Manage</button></td>
+    </tr>
+
+    <tr>
+        <td>staff_admin</td>
+        <td>admin@cipher.platform</td>
+        <td>Admin</td>
+        <td>Active</td>
+        <td><button onclick="manageUser(this)">Manage</button></td>
+    </tr>
+</table>
+
+<footer>
+    CIPHER | Web Technologies Project
+</footer>
+<script src="js/data.js"></script>
+<script src="js/admin.js"></script>
+
+</body>
+</html>

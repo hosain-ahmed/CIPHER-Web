@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CIPHER - Agent Profile</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/extra.css">
+  <style>
+    /* 1. Global Reset & Fonts */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: monospace, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f4f6fa;
+      color: #1e293b;
+      font-size: 13px;
+    }
+
+    /* 2. Main Container Grid */
+    .profile-container {
+      max-width: 1100px;
+      margin: 20px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 20px;
+    }
+
+    /* 4. Common Box Layout */
+    .box {
+      background: white;
+      border: 1px solid #e2e8f0;
+      margin-bottom: 20px;
+    }
+
+    .box-header {
+      background: #f1f5f9;
+      padding: 8px 15px;
+      font-size: 11px;
+      color: #64748b;
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+    }
+
+    .box-body {
+      padding: 15px;
+    }
+
+    /* 5. Profile Hero & Stats */
+    .agent-card {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .avatar-box {
+      background: #e0e7ff;
+      color: #3730a3;
+      padding: 20px;
+      font-weight: bold;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      background: #f8fafc;
+      padding: 10px;
+      border: 1px solid #e2e8f0;
+      text-align: center;
+    }
+
+    .stat-val {
+      font-weight: bold;
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    /* 6. Forms & Inputs */
+    label {
+      display: block;
+      margin-top: 10px;
+      margin-bottom: 4px;
+      color: #475569;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      outline: none;
+    }
+
+    .btn {
+      background: #1d4ed8;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      margin-top: 15px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .form-msg {
+      display: none;
+      margin-top: 10px;
+      font-size: 13px;
+    }
+
+    .flex-inputs {
+      display: flex;
+      gap: 15px;
+    }
+
+    .flex-inputs div {
+      flex: 1;
+    }
+
+    /* 7. Right Column Elements */
+    .glyphs {
+      display: flex;
+      gap: 10px;
+    }
+
+    .glyph-item {
+      flex: 1;
+      background: #eff6ff;
+      text-align: center;
+      padding: 10px;
+      border: 1px solid #bfdbfe;
+      cursor: pointer;
+    }
+
+    .mission-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .badge-green {
+      background: #dcfce7;
+      color: #15803d;
+      padding: 2px 6px;
+      font-size: 11px;
+    }
+
+    .site-header .site-nav a,
+    .site-header .brand {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* 8. Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #64748b;
+      font-size: 12px;
+      border-top: 1px solid #e2e8f0;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container row">
+        <div class="header-left">
+            <a class="brand" href="index.html">CIPHER</a>
+            <nav class="site-nav">
+                <a href="missions.html">Missions</a>
+                <a href="blackmarket.html">Black Market</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="leaderboard.html">Leaderboard</a>
+                <a data-admin href="agents.html">Agents</a>
+                <a href="logs.html">Log</a>
+                <a class="active" href="profile.html">Profile</a>
+            </nav>
+        </div>
+        <div class="mono muted">
+            AGENT <span id="navAgent">-</span>
+            <a href="login.html?logout=1" class="nav-logout">Log out</a>
+        </div>
+    </div>
+</header>
+
+<div class="profile-container">
+    
+    <!-- Left Column -->
+    <div>
+      
+      <!-- Agent Telemetry Box -->
+      <div class="box">
+        <div class="box-header">
+          <span>AGENT TELEMETRY RECORD</span>
+          <span style="color: #16a34a;">STATUS: ACTIVE</span>
+        </div>
+        <div class="box-body">
+          <div class="agent-card">
+            <div class="avatar-box">[ 0x ]</div>
+            <div>
+              <h2 id="profileCardName" style="margin-bottom: 5px;">0xK3Y_N0D3</h2>
+              <p style="color: #64748b;">Enlisted: May 2025 · Affiliation: Independent · Tier 1 Contender</p>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div><small>GLOBAL RANK</small><div class="stat-val" id="statRank" style="color:#1d4ed8;">#4</div></div>
+            <div><small>TOTAL XP</small><div class="stat-val" id="statXp">0</div></div>
+            <div><small>COIN RESERVE</small><div class="stat-val" id="statCoins">100</div></div>
+            <div><small>SOLVED</small><div class="stat-val" id="statSolved">0 / 8</div></div>
+            <div><small>BOUNTIES</small><div class="stat-val" id="statBounties">0</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Identity Attributes Box -->
+      <div class="box">
+        <div class="box-header">
+          <span>IDENTITY ATTRIBUTES</span>
+          <span>CONFIDENTIAL</span>
+        </div>
+        <div class="box-body">
+          <form id="profileForm">
+            <label for="profileName">Operator Full Name</label>
+            <input id="profileName" type="text" value="Alex Vance" required>
+
+            <label for="profileEmail">Institutional / Contact Email</label>
+            <input id="profileEmail" type="email" value="alex.vance@student.edu" required>
+            <small style="color: #64748b; display: block; margin-top: 4px;">🔒 Private - not visible on public profile.</small>
+
+            <button type="submit" class="btn">Save Changes</button>
+            <p id="profileSaveMsg" class="form-msg"></p>
+          </form>
+        </div>
+      </div>
+
+      <!-- Security & Authentication Box -->
+      <div class="box">
+        <div class="box-header">
+          <span>SECURITY & AUTHENTICATION</span>
+          <span>STRICT 256-BIT</span>
+        </div>
+        <div class="box-body">
+          <form id="passwordForm">
+            <label for="currentPassword">Current Password</label>
+            <input id="currentPassword" type="password" placeholder="Current password" required>
+
+            <div class="flex-inputs">
+              <div>
+                <label for="newPassword">New Password</label>
+                <input id="newPassword" type="password" placeholder="Min 10 chars" required>
+              </div>
+              <div>
+                <label for="confirmNewPassword">Confirm New Password</label>
+                <input id="confirmNewPassword" type="password" placeholder="Re-enter password" required>
+              </div>
+            </div>
+
+            <button type="submit" class="btn" style="background:#e2e8f0; color:#334155;">Update Password</button>
+            <p id="passwordMsg" class="form-msg"></p>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Column -->
+    <div>
+      
+      <!-- Monogram Glyph Selection -->
+      <div class="box">
+        <div class="box-header">
+          <span>SELECT MONOGRAM GLYPH</span>
+          <span>GEOMETRIC</span>
+        </div>
+        <div class="box-body">
+          <p style="color:#64748b; margin-bottom:10px;">Standard competitive monogram formats for scoreboard display.</p>
+          <div class="glyphs">
+            <div class="glyph-item">[ 0x ]</div>
+            <div class="glyph-item">// K //</div>
+            <div class="glyph-item">&lt; N3 &gt;</div>
+            <div class="glyph-item">[ # ]</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recently Solved Missions -->
+      <div class="box">
+        <div class="box-header">
+          <span>RECENTLY SOLVED MISSIONS</span>
+          <span id="solvedCountLabel">0 Solves</span>
+        </div>
+        <div class="box-body" id="recentSolved"></div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <strong>CIPHER</strong> · About · Rules
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script>
+    (function () {
+      if (window.CIPHER && !CIPHER.isLoggedIn()) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      const profileForm = document.getElementById("profileForm");
+      const profileName = document.getElementById("profileName");
+      const profileEmail = document.getElementById("profileEmail");
+      const profileSaveMsg = document.getElementById("profileSaveMsg");
+      const passwordForm = document.getElementById("passwordForm");
+      const currentPassword = document.getElementById("currentPassword");
+      const newPassword = document.getElementById("newPassword");
+      const confirmNewPassword = document.getElementById("confirmNewPassword");
+      const passwordMsg = document.getElementById("passwordMsg");
+
+      function showMessage(element, message, ok) {
+        element.textContent = message;
+        element.style.display = "block";
+        element.style.color = ok ? "#16a34a" : "#b91c1c";
+      }
+
+      function escapeHtml(value) {
+        return String(value).replace(/[&<>"']/g, function (c) {
+          return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+        });
+      }
+
+      function loadProfile() {
+        try {
+          const saved = JSON.parse(localStorage.getItem("cipherProfile") || "null");
+          if (!saved) return;
+          profileName.value = saved.fullName || profileName.value;
+          profileEmail.value = saved.email || profileEmail.value;
+        } catch (e) {
+          console.warn("Could not load profile", e);
+        }
+      }
+
+      profileForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const fullName = profileName.value.trim();
+        const email = profileEmail.value.trim();
+        if (!fullName || !email) {
+          showMessage(profileSaveMsg, "Fill in both profile fields.", false);
+          return;
+        }
+        try {
+          localStorage.setItem("cipherProfile", JSON.stringify({ fullName, email }));
+          showMessage(profileSaveMsg, "Profile saved locally.", true);
+        } catch (e) {
+          showMessage(profileSaveMsg, "Could not save the profile.", false);
+        }
+      });
+
+      passwordForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const current = currentPassword.value.trim();
+        const next = newPassword.value;
+        if (!current) {
+          showMessage(passwordMsg, "Enter your current password.", false);
+          return;
+        }
+        if (next.length < 10) {
+          showMessage(passwordMsg, "New password must be at least 10 characters.", false);
+          return;
+        }
+        if (next !== confirmNewPassword.value) {
+          showMessage(passwordMsg, "New passwords do not match.", false);
+          return;
+        }
+        showMessage(passwordMsg, "Password updated locally for this demo.", true);
+        passwordForm.reset();
+      });
+
+      if (window.CIPHER && window.CIPHER_DATA) {
+        const me = CIPHER.me();
+        const missions = CIPHER.missions();
+        const solvedMissions = missions.filter(function (mission) {
+          return CIPHER.isSolved(mission.id);
+        });
+        const mine = CIPHER.bounties().filter(function (bounty) {
+          return bounty.postedBy === me.name;
+        }).length;
+        document.getElementById("profileCardName").textContent = me.name;
+        document.getElementById("statXp").textContent = me.xp;
+        document.getElementById("statCoins").textContent = me.coins;
+        document.getElementById("statSolved").textContent = solvedMissions.length + " / " + missions.length;
+        document.getElementById("statBounties").textContent = mine;
+        document.getElementById("solvedCountLabel").textContent =
+          solvedMissions.length + (solvedMissions.length === 1 ? " Solve" : " Solves");
+
+        const recent = document.getElementById("recentSolved");
+        recent.innerHTML = solvedMissions.length
+          ? solvedMissions.slice(0, 3).map(function (mission) {
+              return `<div class="mission-row">
+                <div>
+                  <strong>${escapeHtml(mission.id)}: ${escapeHtml(mission.title)}</strong><br>
+                  <small style="color:#64748b;">Domain: ${escapeHtml(mission.category)}</small>
+                </div>
+                <span class="badge-green">+${escapeHtml(mission.xp)} XP</span>
+              </div>`;
+            }).join("")
+          : '<p style="color:#64748b;">No solved missions yet. Solve a mission and it will appear here.</p>';
+      }
+
+      loadProfile();
+    })();
+  </script>
+
+</body>
+</html>

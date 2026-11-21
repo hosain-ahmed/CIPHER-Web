@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CIPHER Activity Log</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/extra.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container row">
+        <div class="header-left">
+            <a class="brand" href="index.html">CIPHER</a>
+            <nav class="site-nav">
+                <a href="missions.html">Missions</a>
+                <a href="blackmarket.html">Black Market</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="leaderboard.html">Leaderboard</a>
+                <a data-admin href="agents.html">Agents</a>
+                <a class="active" href="logs.html">Log</a>
+                <a href="profile.html">Profile</a>
+            </nav>
+        </div>
+        <div class="mono muted">
+            AGENT <span id="navAgent">-</span>
+            <a href="login.html?logout=1" class="nav-logout">Log out</a>
+        </div>
+    </div>
+</header>
+
+<h1>Activity Log</h1>
+<p class="info">Recent activities performed by agents.</p>
+
+<!-- Search Box -->
+<input type="text" id="search"
+       placeholder="Search agent..."
+       onkeyup="filterLog()">
+
+<!-- Event Filter -->
+<select id="event" onchange="filterLog()">
+    <option value="All">All Events</option>
+    <option value="Mission Solved">Mission Solved</option>
+    <option value="Mission Failed">Mission Failed</option>
+    <option value="Login">Login</option>
+    <option value="Registration">Registration</option>
+</select>
+
+<!-- Clear Button -->
+<button onclick="clearFilter()">Clear Filter</button>
+
+<!-- Activity Table -->
+<table id="logs">
+    <tr>
+        <th>Time</th>
+        <th>Agent</th>
+        <th>Event</th>
+        <th>Details</th>
+        <th>XP</th>
+        <th>Coins</th>
+    </tr>
+
+    <tr>
+        <td>10:30 AM</td>
+        <td>zero_alex</td>
+        <td>Mission Solved</td>
+        <td>Caesar's First Shift</td>
+        <td>+100</td>
+        <td>+50</td>
+    </tr>
+
+    <tr>
+        <td>10:20 AM</td>
+        <td>byte_runner</td>
+        <td>Mission Solved</td>
+        <td>Binary Basics</td>
+        <td>+150</td>
+        <td>+75</td>
+    </tr>
+
+    <tr>
+        <td>10:15 AM</td>
+        <td>syn_ack</td>
+        <td>Login</td>
+        <td>Agent logged in</td>
+        <td>0</td>
+        <td>0</td>
+    </tr>
+
+    <tr>
+        <td>10:05 AM</td>
+        <td>new_agent</td>
+        <td>Registration</td>
+        <td>New account created</td>
+        <td>0</td>
+        <td>0</td>
+    </tr>
+
+    <tr>
+        <td>09:45 AM</td>
+        <td>null_pointer</td>
+        <td>Mission Failed</td>
+        <td>Hidden Message</td>
+        <td>0</td>
+        <td>0</td>
+    </tr>
+
+    <tr>
+        <td>09:30 AM</td>
+        <td>u21_raskar</td>
+        <td>Mission Solved</td>
+        <td>Network Puzzle</td>
+        <td>+200</td>
+        <td>+100</td>
+    </tr>
+
+</table>
+
+<footer>
+    CIPHER | Web Technologies Project
+</footer>
+<script src="js/data.js"></script>
+<script src="js/admin.js"></script>
+
+</body>
+</html>

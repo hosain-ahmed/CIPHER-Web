@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Black Market | CIPHER</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/extra.css">
+  <link rel="stylesheet" href="css/dark.css">   
+</head>
+<body class="theme-dark">
+
+  <header class="site-header">
+    <div class="container row">
+      <div class="header-left">
+        <a class="brand" href="index.html">CIPHER</a>
+        <nav class="site-nav">
+          <a href="missions.html">Missions</a>
+          <a class="active" href="blackmarket.html">Black Market</a>
+          <a href="dashboard.html">Dashboard</a>
+          <a href="leaderboard.html">Leaderboard</a>
+          <a data-admin href="agents.html">Agents</a>
+          <a href="logs.html">Log</a>
+          <a href="profile.html">Profile</a>
+        </nav>
+      </div>
+      <div class="mono">
+        Agent <span id="navAgent">-</span>
+        <span class="dot">&middot;</span>
+        <span class="accent" id="navCoins">0 Coins</span>
+        <a href="login.html?logout=1" class="nav-logout">Log out</a>
+      </div>
+    </div>
+  </header>
+
+  
+  <div class="subnav">
+    <nav class="container subnav-links">
+      <a class="active" href="blackmarket.html">Overview</a>
+      <a href="shop.html">Shop</a>
+      <a href="bounties.html">Bounties</a>
+    </nav>
+  </div>
+
+  <main class="container page">
+    <div class="row market-head">
+      <div>
+        <h1>Black Market</h1>
+        <p class="muted">Spend your coins in the shop or earn more by solving community bounties.</p>
+      </div>
+      <div class="balance mono">Balance: <strong id="balance">0 Coins</strong></div>
+    </div>
+
+    <section class="columns section">
+      <div class="column panel">
+        <h2>Shop</h2>
+        <p class="muted">Buy items using the coins you earn.</p>
+        <a class="btn btn-primary" href="shop.html">Visit shop</a>
+      </div>
+      <div class="column panel">
+        <h2>Bounties</h2>
+        <p class="muted">Post a challenge or solve one from another agent.</p>
+        <a class="btn" href="bounties.html">Browse bounties</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-line">
+      <strong>CIPHER</strong>
+      <span class="dot">&middot;</span><a href="#">About</a>
+      <span class="dot">&middot;</span><a href="#">Rules</a>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/missionfiles/market.js"></script>
+</body>
+</html>

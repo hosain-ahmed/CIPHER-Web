@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create | CIPHER</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/extra.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container row">
+      <div class="header-left">
+        <a class="brand" href="index.html">CIPHER</a>
+        <nav class="site-nav">
+          <a href="missions.html">Missions</a>
+          <a href="blackmarket.html">Black Market</a>
+          <a href="dashboard.html">Dashboard</a>
+          <a href="leaderboard.html">Leaderboard</a>
+          <a data-admin href="agents.html">Agents</a>
+          <a href="logs.html">Log</a>
+          <a href="profile.html">Profile</a>
+        </nav>
+      </div>
+      <div class="mono muted">
+        AGENT <span id="navAgent">-</span>
+        <a href="login.html?logout=1" class="nav-logout">Log out</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container page">
+    <div class="subbar row">
+      <a id="backLink" href="missions.html">&larr; Back to Missions</a>
+    </div>
+
+    <section class="panel">
+      <h1 id="createTitle">Create Mission</h1>
+      <p class="muted" id="createIntro">Add a new challenge to the mission directory.</p>
+
+      <div id="createMsg" class="alert" hidden></div>
+
+      <form id="createForm" autocomplete="off">
+        <div class="form-group">
+          <label for="fTitle">Title</label>
+          <input class="form-control" id="fTitle" maxlength="120" required>
+        </div>
+
+        <div class="form-group" data-for="mission">
+          <label for="fMissionId">Mission ID</label>
+          <input class="form-control" id="fMissionId" placeholder="e.g. C-106" maxlength="20">
+        </div>
+
+        <div class="form-group" data-for="mission">
+          <label for="fSubtitle">Subtitle</label>
+          <input class="form-control" id="fSubtitle" maxlength="120">
+        </div>
+
+        <div class="form-group" data-for="mission">
+          <label for="fCategory">Category</label>
+          <select class="form-control" id="fCategory">
+            <option>Cryptography</option>
+            <option>Web Security</option>
+            <option>Reverse Engineering</option>
+            <option>Forensics</option>
+            <option>Logic</option>
+            <option>Misc</option>
+          </select>
+        </div>
+
+        <div class="form-group" data-for="mission">
+          <label for="fDifficulty">Difficulty</label>
+          <select class="form-control" id="fDifficulty">
+            <option>Easy</option>
+            <option>Medium</option>
+            <option>Hard</option>
+          </select>
+        </div>
+
+        <div class="form-group" data-for="mission">
+          <label for="fXp">XP reward</label>
+          <input class="form-control" id="fXp" type="number" min="0" step="1" value="50">
+        </div>
+
+        <div class="form-group" data-for="mission">
+          <label for="fCoins">Coin reward</label>
+          <input class="form-control" id="fCoins" type="number" min="0" step="1" value="15">
+        </div>
+
+        <div class="form-group" data-for="bounty">
+          <label for="fReward">Reward (Coins)</label>
+          <input class="form-control" id="fReward" type="number" min="1" step="1" value="50">
+        </div>
+
+        <div class="form-group">
+          <label for="fDesc">Description</label>
+          <textarea class="form-control" id="fDesc" rows="5" required></textarea>
+        </div>
+
+        <div class="form-group" data-for="mission">
+          <label for="fPayload">Challenge payload</label>
+          <textarea class="form-control" id="fPayload" rows="4" placeholder="Ciphertext, code, URL, or other challenge material"></textarea>
+        </div>
+
+        <div class="form-group" data-for="mission">
+          <label for="fHint">Hint</label>
+          <input class="form-control" id="fHint" maxlength="200">
+        </div>
+
+        <div class="form-group" data-for="mission">
+          <label for="fAnswer">Expected answer</label>
+          <input class="form-control" id="fAnswer" maxlength="200">
+          <p class="muted small-text">Used for frontend answer checking until the API is connected.</p>
+        </div>
+
+        <div class="row section">
+          <button class="btn btn-primary" id="btnSubmit" type="submit">Create Mission</button>
+          <a class="btn" id="cancelLink" href="missions.html">Cancel</a>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container row">
+      <div><strong>CIPHER</strong> Academic Challenge Platform</div>
+      <nav class="footer-links"><a href="#">About</a><a href="#">Rules</a></nav>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/missionfiles/create.js"></script>
+</body>
+</html>
