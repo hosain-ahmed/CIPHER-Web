@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CIPHER Leaderboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+    <b>CIPHER</b>
+    <a href="index.html">Dashboard</a>
+    <a href="leaderboard.html">Leaderboard</a>
+    <a href="agents.html">Agents</a>
+    <a href="log.html">Log</a>
+</nav>
+
+<h1>Leaderboard</h1>
+<p class="info">Agent rankings based on total XP earned.</p>
+
+<!-- Summary -->
+<div class="cards">
+    <div class="card">
+        <h1>142</h1>
+        <p>Total Agents</p>
+    </div>
+
+    <div class="card">
+        <h1>120 XP</h1>
+        <p>Minimum XP</p>
+    </div>
+</div>
+
+<!-- Search -->
+<input type="text" id="search"
+       placeholder="Search agent..."
+       onkeyup="searchAgent()">
+
+<!-- Leaderboard Table -->
+<table id="leaderboard">
+    <tr>
+        <th>Rank</th>
+        <th>Agent</th>
+        <th>Tier</th>
+        <th>Total XP</th>
+        <th>Missions</th>
+    </tr>
+
+    <tr>
+        <td>1</td>
+        <td>zero_alex</td>
+        <td>Master</td>
+        <td>2450</td>
+        <td>21</td>
+    </tr>
+
+    <tr>
+        <td>2</td>
+        <td>u21_raskar</td>
+        <td>Specialist</td>
+        <td>2180</td>
+        <td>19</td>
+    </tr>
+
+    <tr>
+        <td>3</td>
+        <td>byte_runner</td>
+        <td>Specialist</td>
+        <td>1940</td>
+        <td>17</td>
+    </tr>
+
+    <tr>
+        <td>4</td>
+        <td>0xK3Y_N0D3</td>
+        <td>Candidate</td>
+        <td>450</td>
+        <td>4</td>
+    </tr>
+
+    <tr>
+        <td>5</td>
+        <td>null_pointer</td>
+        <td>Candidate</td>
+        <td>420</td>
+        <td>4</td>
+    </tr>
+
+    <tr>
+        <td>6</td>
+        <td>vector_echo</td>
+        <td>Pupil</td>
+        <td>310</td>
+        <td>3</td>
+    </tr>
+
+    <tr>
+        <td>7</td>
+        <td>cipher_novice</td>
+        <td>Newbie</td>
+        <td>180</td>
+        <td>2</td>
+    </tr>
+
+    <tr>
+        <td>8</td>
+        <td>syn_ack</td>
+        <td>Newbie</td>
+        <td>120</td>
+        <td>1</td>
+    </tr>
+</table>
+
+<footer>
+    CIPHER | Web Technologies Project
+</footer>
+<script src="script.js"></script>
+
+</body>
+</html>
