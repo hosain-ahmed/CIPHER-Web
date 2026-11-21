@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create Agent Account</title>
+  <link rel="stylesheet" href="css/register.css">
+</head>
+<body>
+  <main class="card">
+    <h1>Create Agent Account</h1>
+    <p class="subtitle">Register for the academic problem-solving platform. New accounts are automatically assigned the Agent role.</p>
+
+    <form id="registerForm" novalidate>
+
+      <div class="field">
+        <div class="label-row">
+          <label for="codename">Codename</label>
+          <span id="codenameStatus" class="status"></span>
+        </div>
+        <p class="hint">Unique handle shown on leaderboards (letters, numbers, underscore, 3-16 chars).</p>
+        <input type="text" id="codename" placeholder="zero_day_alex" autocomplete="username">
+        <p class="error" id="codenameError"></p>
+      </div>
+
+      <div class="field">
+        <label for="fullName">Full Name</label>
+        <p class="hint">Name used for lab evaluation.</p>
+        <input type="text" id="fullName" placeholder="Alex Vance" autocomplete="name">
+        <p class="error" id="fullNameError"></p>
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <p class="hint">Your institutional student email.</p>
+        <input type="email" id="email" placeholder="alex.vance@student.cs.edu" autocomplete="email">
+        <p class="error" id="emailError"></p>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="password">Password</label>
+          <p class="hint">Min 8 chars, 1+ digit.</p>
+          <input type="password" id="password" autocomplete="new-password">
+          <p class="error" id="passwordError"></p>
+        </div>
+        <div class="field">
+          <label for="confirmPassword">Confirm Password</label>
+          <p class="hint">Must match.</p>
+          <input type="password" id="confirmPassword" autocomplete="new-password">
+          <p class="error" id="confirmPasswordError"></p>
+        </div>
+      </div>
+
+      <p class="pledge">By creating an account, you agree to solve missions individually without publishing solution flags.</p>
+
+      <button type="submit">Create Account</button>
+      <p class="success" id="successMessage"></p>
+    </form>
+
+    <p class="login-link">Already have an agent account? <a href="login.html">Log In</a></p>
+  </main>
+
+  <script src="js/register.js"></script>
+</body>
+</html>
