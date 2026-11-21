@@ -251,7 +251,7 @@ function getCurrentUser() {
   }
 
   const name = readText(CIPHER_AGENT_KEY) || base.name;
-  const role = readText("cipherRole") || "admin";
+  const role = readText("cipherRole") || "user";
   return { name: name, xp: base.xp, coins: base.coins, role: role };
 }
 
@@ -291,6 +291,7 @@ function markSolved(id) {
 }
 
 function updateAuthLinks() {
+  const me = getCurrentUser();
   const links = document.querySelectorAll(".nav-logout");
 
   links.forEach(function (link) {
@@ -301,6 +302,14 @@ function updateAuthLinks() {
       link.textContent = "Log in";
       link.href = "login.html";
     }
+  });
+
+  document.querySelectorAll("#navAgent").forEach(function (element) {
+    element.textContent = me.name;
+  });
+
+  document.querySelectorAll("[data-admin]").forEach(function (element) {
+    element.hidden = me.role !== "admin";
   });
 }
 

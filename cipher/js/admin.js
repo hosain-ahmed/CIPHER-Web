@@ -114,3 +114,15 @@ function clearFilter() {
 
     filterLog();
 }
+
+
+function initAdminHeader() {
+
+    let agentsTable = document.getElementById("agents");
+    if (agentsTable && CIPHER.me().role !== "admin") {
+        window.location.href = "dashboard.html";
+    }
+}
+
+
+initAdminHeader();

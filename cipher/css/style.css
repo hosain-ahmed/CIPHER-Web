@@ -89,6 +89,34 @@ a:hover{
   font-weight:bold;
   border-bottom:2px solid #1d4ed8;
 }
+
+.subnav-links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:18px;
+}
+
+.subnav-links a{
+  color:#566174;
+  font-size:14px;
+}
+
+.subnav-links .active{
+  color:#0645c0;
+  font-weight:bold;
+  border-bottom:2px solid #1d4ed8;
+}
+
+.footer-links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:16px;
+}
+
+.footer-links a{
+  color:#566174;
+  font-size:14px;
+}
 .btn{
   display:inline-block;
   padding:9px 14px;

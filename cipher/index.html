@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CIPHER Challenge Platform</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/extra.css">
   <style>
     /* Basic Page Reset */
     * {
@@ -16,29 +18,6 @@
     body {
       background-color: #f7f9fc;
       color: #333;
-    }
-
-    /* Header / Navbar */
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 40px;
-      background-color: #ffffff;
-      border-bottom: 1px solid #ddd;
-    }
-
-    .nav-links a {
-      margin-right: 20px;
-      text-decoration: none;
-      color: #555;
-      font-weight: bold;
-    }
-
-    .nav-links a.active {
-      color: #1a56db;
-      border-bottom: 2px solid #1a56db;
-      padding-bottom: 5px;
     }
 
     .btn-blue {
@@ -63,22 +42,6 @@
       display: inline-block;
       text-decoration: none;
       text-align: center;
-    }
-
-    .auth-area {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .auth-area a {
-      color: #333;
-      text-decoration: none;
-    }
-
-    .auth-agent {
-      font-size: 14px;
-      color: #333;
     }
 
     /* Hero Section */
@@ -223,21 +186,26 @@
 </head>
 <body>
 
-  <!-- Navigation Bar -->
-  <header>
-    <div>
-      <a href="index.html" style="margin-right: 20px; text-decoration: none; color: inherit;"><strong>CIPHER</strong></a>
-      <span class="nav-links">
-        <a href="index.html" class="active">Welcome</a>
-        <a href="missions.html">Missions</a>
-        <a href="leaderboard.html">Leaderboard</a>
-      </span>
+<header class="site-header">
+    <div class="container row">
+        <div class="header-left">
+            <a class="brand" href="index.html">CIPHER</a>
+            <nav class="site-nav">
+                <a href="missions.html">Missions</a>
+                <a href="blackmarket.html">Black Market</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="leaderboard.html">Leaderboard</a>
+                <a data-admin href="agents.html">Agents</a>
+                <a href="logs.html">Log</a>
+                <a href="profile.html">Profile</a>
+            </nav>
+        </div>
+        <div class="mono muted">
+            AGENT <span id="navAgent">-</span>
+            <a href="login.html?logout=1" class="nav-logout">Log out</a>
+        </div>
     </div>
-    <div id="authArea" class="auth-area">
-      <a href="login.html">Log in</a>
-      <a class="btn-blue" href="register.html">Create account</a>
-    </div>
-  </header>
+</header>
 
   <!-- Hero Section -->
   <div class="hero">
@@ -336,23 +304,13 @@
   <script src="js/data.js"></script>
   <script>
     (function () {
-      if (!window.CIPHER || !CIPHER.isLoggedIn()) return;
-
-      function esc(value) {
-        return String(value).replace(/[&<>"']/g, function (c) {
-          return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
-        });
+      if (!CIPHER.isLoggedIn()) {
+        return;
       }
 
-      const me = CIPHER.me();
-      document.getElementById("authArea").innerHTML =
-        `<span class="auth-agent">AGENT <strong>${esc(me.name)}</strong> &middot; ${esc(me.coins)} Coins</span>
-         <a href="profile.html">Profile</a>
-         <a href="login.html?logout=1">Log out</a>`;
-
-      const hero = document.getElementById("heroPrimary");
-      hero.textContent = "Continue missions";
-      hero.href = "missions.html";
+      const button = document.getElementById("heroPrimary");
+      button.textContent = "Continue missions";
+      button.href = "missions.html";
     })();
   </script>
 </body>

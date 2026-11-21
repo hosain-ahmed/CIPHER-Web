@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CIPHER - Agent Profile</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/extra.css">
   <style>
     /* 1. Global Reset & Fonts */
     * {
@@ -19,29 +21,8 @@
       font-size: 13px;
     }
 
-    /* 2. Top Navigation Bar */
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: white;
-      padding: 12px 30px;
-      border-bottom: 1px solid #e2e8f0;
-    }
-
-    .nav-left span, .nav-left a {
-      margin-right: 15px;
-      text-decoration: none;
-      color: #475569;
-    }
-
-    .brand {
-      font-weight: bold;
-      color: #0f172a;
-    }
-
-    /* 3. Main Container Grid */
-    .container {
+    /* 2. Main Container Grid */
+    .profile-container {
       max-width: 1100px;
       margin: 20px auto;
       padding: 0 20px;
@@ -172,6 +153,11 @@
       font-size: 11px;
     }
 
+    .site-header .site-nav a,
+    .site-header .brand {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
     /* 8. Footer */
     footer {
       text-align: center;
@@ -185,23 +171,28 @@
 </head>
 <body>
 
-  <!-- Top Navigation -->
-  <header>
-    <div class="nav-left">
-      <a class="brand" href="index.html">CIPHER</a>
-      <a href="missions.html">Missions</a>
-      <a href="blackmarket.html">Black Market</a>
-      <a href="logs.html">Log</a>
-      <a href="leaderboard.html">Leaderboard</a>
-      <a href="profile.html">Profile</a>
+<header class="site-header">
+    <div class="container row">
+        <div class="header-left">
+            <a class="brand" href="index.html">CIPHER</a>
+            <nav class="site-nav">
+                <a href="missions.html">Missions</a>
+                <a href="blackmarket.html">Black Market</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="leaderboard.html">Leaderboard</a>
+                <a data-admin href="agents.html">Agents</a>
+                <a href="logs.html">Log</a>
+                <a class="active" href="profile.html">Profile</a>
+            </nav>
+        </div>
+        <div class="mono muted">
+            AGENT <span id="navAgent">-</span>
+            <a href="login.html?logout=1" class="nav-logout">Log out</a>
+        </div>
     </div>
-    <div>
-      AGENT <strong id="profileAgentName">0xK3Y_N0D3</strong> | <a href="login.html?logout=1" style="color:#64748b;">Log out</a>
-    </div>
-  </header>
+</header>
 
-  <!-- Main Dashboard Container -->
-  <div class="container">
+<div class="profile-container">
     
     <!-- Left Column -->
     <div>
@@ -406,7 +397,6 @@
         const mine = CIPHER.bounties().filter(function (bounty) {
           return bounty.postedBy === me.name;
         }).length;
-        document.getElementById("profileAgentName").textContent = me.name;
         document.getElementById("profileCardName").textContent = me.name;
         document.getElementById("statXp").textContent = me.xp;
         document.getElementById("statCoins").textContent = me.coins;
