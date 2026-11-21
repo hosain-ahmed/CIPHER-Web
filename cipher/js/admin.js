@@ -118,9 +118,9 @@ function clearFilter() {
 
 function initAdminHeader() {
 
-    let agentsTable = document.getElementById("agents");
-    if (agentsTable && CIPHER.me().role !== "admin") {
-        window.location.href = "dashboard.html";
+    if (document.body.hasAttribute("data-admin-page") &&
+        CIPHER.me().role !== "admin") {
+        window.location.href = "index.html";
     }
 }
 
