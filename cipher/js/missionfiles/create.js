@@ -1,34 +1,12 @@
-const API = {
-  me: "/api/me",
-  missions: "/api/missions",
-  bounties: "/api/bounties",
-};
+const params = new URLSearchParams(window.location.search);
+const isBounty = params.get("type") === "bounty";
+const editId = isBounty ? null : params.get("id");
+const isEdit = editId !== null;
+const listPage = isBounty ? "bounties.html" : "missions.html";
 
 const $ = (id) => document.getElementById(id);
-const PARAMS = new URLSearchParams(location.search);
-const IS_BOUNTY = PARAMS.get("type") === "bounty";
-const EDIT_ID = IS_BOUNTY ? null : PARAMS.get("id");
-const IS_EDIT = Boolean(EDIT_ID);
-const TYPE = IS_BOUNTY ? "bounty" : "mission";
-const LIST_PAGE = IS_BOUNTY ? "bounties.html" : "missions.html";
 
-let me = {
-  ...CIPHER_DATA.me,
-  role: (function () {
-    try { return localStorage.getItem("cipherRole") || "admin"; } catch (e) { return "admin"; }
-  })(),
-};
-
-async function getJSON(url, fallback) {
-  try {
-    const res = await fetch(url, { credentials: "same-origin" });
-    if (!res.ok) throw new Error(res.status);
-    return await res.json();
-  } catch (e) {
-    console.warn("API failed, using mock for", url, e);
-    return fallback;
-  }
-}
+let me = null;
 
 function showError(message) {
   const box = $("createMsg");
@@ -38,17 +16,24 @@ function showError(message) {
 }
 
 function applyType() {
-  document.title = IS_BOUNTY ? "Post Bounty | CIPHER" : "Create Mission | CIPHER";
-  $("createTitle").textContent = IS_BOUNTY ? "Post a bounty" : "Create a mission";
-  $("createIntro").textContent = IS_BOUNTY
-    ? "Post a challenge and offer a coin reward to the agent who solves it."
-    : "Add a new challenge to the mission directory.";
-  $("btnSubmit").textContent = IS_BOUNTY ? "Post bounty" : "Create mission";
-  $("backLink").href = LIST_PAGE;
-  $("backLink").textContent = IS_BOUNTY ? "← Back to Bounties" : "← Back to Missions";
-  $("cancelLink").href = LIST_PAGE;
+  if (isBounty) {
+    document.title = "Post Bounty | CIPHER";
+    $("createTitle").textContent = "Post a bounty";
+    $("createIntro").textContent = "Post a challenge and offer a coin reward to the agent who solves it.";
+    $("btnSubmit").textContent = "Post bounty";
+    $("backLink").textContent = "← Back to Bounties";
+  } else {
+    document.title = "Create Mission | CIPHER";
+    $("createTitle").textContent = "Create a mission";
+    $("createIntro").textContent = "Add a new challenge to the mission directory.";
+    $("btnSubmit").textContent = "Create mission";
+    $("backLink").textContent = "← Back to Missions";
+  }
 
-  if (IS_EDIT) {
+  $("backLink").href = listPage;
+  $("cancelLink").href = listPage;
+
+  if (isEdit) {
     document.title = "Edit Mission | CIPHER";
     $("createTitle").textContent = "Edit mission";
     $("createIntro").textContent = "Update the mission details and save your changes.";
@@ -56,10 +41,11 @@ function applyType() {
     $("fMissionId").readOnly = true;
   }
 
-  document.querySelectorAll("[data-for]").forEach((group) => {
-    const active = group.dataset.for === TYPE;
+  document.querySelectorAll("[data-for]").forEach(function (group) {
+    const active = group.dataset.for === (isBounty ? "bounty" : "mission");
     group.hidden = !active;
-    group.querySelectorAll("input, select, textarea").forEach((field) => {
+
+    group.querySelectorAll("input, select, textarea").forEach(function (field) {
       field.disabled = !active;
     });
   });
@@ -75,32 +61,69 @@ function buildMission() {
   const coins = Number(coinsValue);
   const answer = $("fAnswer").value.trim();
 
-  if (!id) return showError("Mission ID is required.");
-  if (!title) return showError("Title is required.");
-  if (!description) return showError("Description is required.");
-  if (!answer) return showError("Expected answer is required.");
-  if (!xpValue) return showError("XP is required.");
-  if (!coinsValue) return showError("Coins are required.");
-  if (!Number.isFinite(xp) || xp < 0) return showError("XP must be a non-negative number.");
-  if (!Number.isFinite(coins) || coins < 0) return showError("Coins must be a non-negative number.");
-  const duplicate = CIPHER.missions().some((mission) =>
-    String(mission.id).toLowerCase() === id.toLowerCase() &&
-    (!IS_EDIT || String(mission.id).toLowerCase() !== String(EDIT_ID).toLowerCase())
-  );
-  if (duplicate) return showError("That mission ID already exists.");
+  if (!id) {
+    showError("Mission ID is required.");
+    return null;
+  }
+
+  if (!title) {
+    showError("Title is required.");
+    return null;
+  }
+
+  if (!description) {
+    showError("Description is required.");
+    return null;
+  }
+
+  if (!answer) {
+    showError("Expected answer is required.");
+    return null;
+  }
+
+  if (!xpValue) {
+    showError("XP is required.");
+    return null;
+  }
+
+  if (!coinsValue) {
+    showError("Coins are required.");
+    return null;
+  }
+
+  if (!Number.isFinite(xp) || xp < 0) {
+    showError("XP must be a non-negative number.");
+    return null;
+  }
+
+  if (!Number.isFinite(coins) || coins < 0) {
+    showError("Coins must be a non-negative number.");
+    return null;
+  }
+
+  const duplicate = CIPHER.missions().some(function (mission) {
+    const sameId = String(mission.id).toLowerCase() === id.toLowerCase();
+    const isCurrentMission = isEdit && String(mission.id).toLowerCase() === String(editId).toLowerCase();
+    return sameId && !isCurrentMission;
+  });
+
+  if (duplicate) {
+    showError("That mission ID already exists.");
+    return null;
+  }
 
   return {
-    id,
-    title,
+    id: id,
+    title: title,
     subtitle: $("fSubtitle").value.trim(),
     category: $("fCategory").value,
     difficulty: $("fDifficulty").value,
-    xp,
-    coins,
-    description,
+    xp: xp,
+    coins: coins,
+    description: description,
     payload: $("fPayload").value.trim(),
     hint: $("fHint").value.trim(),
-    answer,
+    answer: answer
   };
 }
 
@@ -109,17 +132,28 @@ function buildBounty() {
   const description = $("fDesc").value.trim();
   const reward = Number($("fReward").value);
 
-  if (!title) return showError("Title is required.");
-  if (!description) return showError("Description is required.");
-  if (!Number.isFinite(reward) || reward < 1) return showError("Reward must be at least 1 coin.");
+  if (!title) {
+    showError("Title is required.");
+    return null;
+  }
+
+  if (!description) {
+    showError("Description is required.");
+    return null;
+  }
+
+  if (!Number.isFinite(reward) || reward < 1) {
+    showError("Reward must be at least 1 coin.");
+    return null;
+  }
 
   return {
     id: Date.now(),
-    title,
+    title: title,
     postedBy: me.name,
-    reward,
+    reward: reward,
     status: "open",
-    description,
+    description: description
   };
 }
 
@@ -129,60 +163,61 @@ function fillMission(mission) {
   $("fSubtitle").value = mission.subtitle || "";
   $("fCategory").value = mission.category || "Cryptography";
   $("fDifficulty").value = mission.difficulty || "Easy";
-  $("fXp").value = mission.xp ?? 0;
-  $("fCoins").value = mission.coins ?? 0;
+  $("fXp").value = mission.xp || 0;
+  $("fCoins").value = mission.coins || 0;
   $("fDesc").value = mission.description || "";
   $("fPayload").value = mission.payload || "";
   $("fHint").value = mission.hint || "";
   $("fAnswer").value = mission.answer || "";
 }
 
-async function save(item) {
-  const url = IS_BOUNTY ? API.bounties : API.missions;
-  try {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "same-origin",
-      body: JSON.stringify(item),
-    });
-    if (!res.ok) throw new Error(res.status);
-  } catch (e) {
-    console.warn("API unavailable, saving locally", e);
+function saveItem(item) {
+  if (isBounty) {
+    CIPHER.saveBounty(item);
+  } else {
+    CIPHER.saveMission(item);
   }
 
-  if (IS_BOUNTY) CIPHER.saveBounty(item);
-  else CIPHER.saveMission(item);
-
-  window.location.href = LIST_PAGE;
+  window.location.href = listPage;
 }
 
-(async function init() {
+function handleSubmit(event) {
+  event.preventDefault();
+
+  const item = isBounty ? buildBounty() : buildMission();
+  if (!item) {
+    return;
+  }
+
+  $("btnSubmit").disabled = true;
+  $("btnSubmit").textContent = "Saving...";
+  saveItem(item);
+}
+
+function init() {
   applyType();
-  me = CIPHER.me(await getJSON(API.me, me));
+
+  me = CIPHER.me();
   $("navAgent").textContent = me.name;
 
   if (!CIPHER.isLoggedIn()) {
     showError("Log in to create a mission or post a bounty.");
-    $("createForm").querySelectorAll("input, select, textarea, button").forEach((field) => {
+    $("createForm").querySelectorAll("input, select, textarea, button").forEach(function (field) {
       field.disabled = true;
     });
     return;
   }
 
-  if (IS_EDIT) {
-    const mission = CIPHER.findMission(EDIT_ID);
-    if (!mission) return showError("Mission not found.");
+  if (isEdit) {
+    const mission = CIPHER.findMission(editId);
+    if (!mission) {
+      showError("Mission not found.");
+      return;
+    }
     fillMission(mission);
   }
 
-  $("createForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const item = IS_BOUNTY ? buildBounty() : buildMission();
-    if (!item) return;
+  $("createForm").addEventListener("submit", handleSubmit);
+}
 
-    $("btnSubmit").disabled = true;
-    $("btnSubmit").textContent = "Saving...";
-    await save(item);
-  });
-})();
+init();
