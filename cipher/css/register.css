@@ -1,0 +1,163 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: #f7f9ff;
+  color: #111827;
+  font-family: "Inter", Arial, sans-serif;
+}
+
+.card {
+  width: 100%;
+  max-width: 560px;
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 4px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 32px;
+}
+
+.subtitle {
+  margin: 0 0 24px;
+  line-height: 1.5;
+}
+
+.field {
+  margin-bottom: 18px;
+  flex: 1;
+}
+
+.row {
+  display: flex;
+  gap: 16px;
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+label {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.hint {
+  margin: 4px 0 8px;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background: #eef2ff;
+  font-family: "Courier New", monospace;
+  font-size: 15px;
+}
+
+input:focus {
+  outline: none;
+  border-color: #1d4ed8;
+  background: #ffffff;
+}
+
+input.invalid {
+  border-color: #dc2626;
+}
+
+input.valid {
+  border-color: #047857;
+}
+
+.error {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: #dc2626;
+  min-height: 0;
+}
+
+.status {
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.status.ok {
+  color: #047857;
+}
+
+.status.bad {
+  color: #dc2626;
+}
+
+.pledge {
+  background: #eef2ff;
+  padding: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0 0 20px;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 2px;
+  background: #1d4ed8;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #1e40af;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid #93c5fd;
+  outline-offset: 2px;
+}
+
+.success {
+  margin: 12px 0 0;
+  text-align: center;
+  color: #047857;
+  font-weight: 600;
+}
+
+.login-link {
+  margin: 20px 0 0;
+  text-align: center;
+}
+
+.login-link a {
+  color: #1d4ed8;
+}
+
+@media (max-width: 480px) {
+  .row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .card {
+    padding: 24px 18px;
+  }
+}
