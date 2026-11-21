@@ -1,156 +1,205 @@
-// PHP connector
+const PAGE_SIZE = 8;
 
-const API ={
-    me: "/api/me", //this for my personal info
-    missions: "/api/missions", // this for the missions info
+const state = {
+  me: null,
+  missions: [],
+  page: 1
 };
 
-const PAGE_SIZE =8;
-
-//MOCK DATA FOR FRONTEND PRESENTATION
-
-const MOCK = {
-  me: {
-    ...CIPHER_DATA.me,
-    role: (function(){ try { return localStorage.getItem("cipherRole") || "admin"; } catch (e) { return "admin"; } })(),
-  },
-  missions: CIPHER_DATA.missions,
-};
-
-//State of the progress
-
-const state = {me: null, missions: [], page:1};
 const $ = (id) => document.getElementById(id);
 
-//Helper Functions
-
-function esc(s){
-    return String(s).replace(/[&<>"']/g, (c)=>
-    ({"&": "&amp;", "<": "&lt;", ">":"&gt;", '"': "&quot;" , "'" : "&#39;"}[c]));
-}
-
-async function getJSON(url,fallback){
-    try{
-        const res= await fetch(url, {credentials: "same-origin"});
-        if (!res.ok) throw new Error(res.status);
-        return await res.json();
-    }
-    catch (e){
-        console.warn("API failed, using mock for", url,e);
-        return fallback;
-    }
+function esc(value) {
+  return String(value).replace(/[&<>"']/g, function (character) {
+    const entities = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    };
+    return entities[character];
+  });
 }
 
 function isSolved(mission) {
-    return CIPHER.isLoggedIn() && CIPHER.isSolved(mission.id);
+  return CIPHER.isLoggedIn() && CIPHER.isSolved(mission.id);
 }
 
-function getFiltered(){
-    const q = $("fSearch").value.trim().toLowerCase();
-    const cat = $("fCategory").value;
-    const diff = $("fDifficulty").value;
-    const st= $("fStatus").value;
+function getFiltered() {
+  const search = $("fSearch").value.trim().toLowerCase();
+  const category = $("fCategory").value;
+  const difficulty = $("fDifficulty").value;
+  const status = $("fStatus").value;
 
-    return state.missions.filter((m) => {
-        if (q && !(m.title.toLowerCase().includes(q) || m.id.toLowerCase().includes(q))) return false;
-        if (cat && m.category !== cat) return false;
-        if (diff && m.difficulty !== diff) return false;
-        if (st && (st === "solved") !== isSolved(m)) return false;
-        return true;
-    });
+  return state.missions.filter(function (mission) {
+    const matchesSearch =
+      !search ||
+      mission.title.toLowerCase().includes(search) ||
+      mission.id.toLowerCase().includes(search);
+
+    const matchesCategory = !category || mission.category === category;
+    const matchesDifficulty = !difficulty || mission.difficulty === difficulty;
+    const matchesStatus = !status || (status === "solved") === isSolved(mission);
+
+    return matchesSearch && matchesCategory && matchesDifficulty && matchesStatus;
+  });
 }
 
-function renderStats(){
-    const solved = state.missions.filter(isSolved).length;
-    $("navAgent").textContent = state.me.name;
-    $("agentStats").innerHTML= 
-    `<span>AGENT : <b>${esc(state.me.name)}</b></span>`+
+function renderStats() {
+  const solvedCount = state.missions.filter(isSolved).length;
+
+  $("navAgent").textContent = state.me.name;
+  $("agentStats").innerHTML =
+    `<span>AGENT : <b>${esc(state.me.name)}</b></span>` +
     `<span>XP: ${esc(state.me.xp)}</span>` +
     `<span>COINS: ${esc(state.me.coins)}</span>` +
-    `<span>SOLVED: <b>${solved} / ${state.missions.length}</b></span>`;
+    `<span>SOLVED: <b>${solvedCount} / ${state.missions.length}</b></span>`;
 }
 
 function renderRows() {
   const list = getFiltered();
   const pages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
-  if (state.page > pages) state.page = pages;
+
+  if (state.page > pages) {
+    state.page = pages;
+  }
+
   const start = (state.page - 1) * PAGE_SIZE;
-  const slice = list.slice(start, start + PAGE_SIZE);
+  const visibleMissions = list.slice(start, start + PAGE_SIZE);
 
-  $("missionRows").innerHTML = slice.length
-    ? slice.map((m) => `
-      <tr>
-        <td class="mono"><a href="mission.html?id=${encodeURIComponent(m.id)}">${esc(m.id)}</a></td>
-        <td>
-          <a class="title-link" href="mission.html?id=${encodeURIComponent(m.id)}">${esc(m.title)}</a>
-          <span class="secondary-text mono">${esc(m.subtitle)}</span>
-        </td>
-        <td>${esc(m.category)}</td>
-        <td><span class="badge badge-${esc(m.difficulty.toLowerCase())}">${esc(m.difficulty.toUpperCase())}</span></td>
-        <td class="num">${esc(m.xp)}</td>
-        <td class="num text-negative">${esc(m.coins)}</td>
-        <td>${isSolved(m)
-          ? '<span class="status-solved">&#10003; SOLVED</span>'
-          : `<a class="btn btn-solve" href="mission.html?id=${encodeURIComponent(m.id)}">Solve &rarr;</a>`}</td>
-      </tr>`).join("")
-    : `<tr><td colspan="7" class="muted">No missions match these filters.</td></tr>`;
+  if (visibleMissions.length === 0) {
+    $("missionRows").innerHTML =
+      '<tr><td colspan="7" class="muted">No missions match these filters.</td></tr>';
+  } else {
+    $("missionRows").innerHTML = visibleMissions.map(function (mission) {
+      const solved = isSolved(mission);
+      const statusHtml = solved
+        ? '<span class="status-solved">&#10003; SOLVED</span>'
+        : `<a class="btn btn-solve" href="mission.html?id=${encodeURIComponent(mission.id)}">Solve &rarr;</a>`;
 
-  $("showing").textContent = list.length
-    ? `Showing ${start + 1}-${start + slice.length} of ${list.length} missions`
-    : "Showing 0 missions";
+      return `
+        <tr>
+          <td class="mono"><a href="mission.html?id=${encodeURIComponent(mission.id)}">${esc(mission.id)}</a></td>
+          <td>
+            <a class="title-link" href="mission.html?id=${encodeURIComponent(mission.id)}">${esc(mission.title)}</a>
+            <span class="secondary-text mono">${esc(mission.subtitle)}</span>
+          </td>
+          <td>${esc(mission.category)}</td>
+          <td><span class="badge badge-${esc(mission.difficulty.toLowerCase())}">${esc(mission.difficulty.toUpperCase())}</span></td>
+          <td class="num">${esc(mission.xp)}</td>
+          <td class="num text-negative">${esc(mission.coins)}</td>
+          <td>${statusHtml}</td>
+        </tr>`;
+    }).join("");
+  }
+
+  if (list.length === 0) {
+    $("showing").textContent = "Showing 0 missions";
+  } else {
+    $("showing").textContent =
+      `Showing ${start + 1}-${start + visibleMissions.length} of ${list.length} missions`;
+  }
 
   renderPagination(pages);
 }
 
 function renderPagination(pages) {
-  let html = `<button data-page="${state.page - 1}" ${state.page === 1 ? "disabled" : ""}>&lt; Prev</button>`;
-  for (let p = 1; p <= pages; p++) {
-    html += `<button data-page="${p}" class="${p === state.page ? "active" : ""}">${p}</button>`;
+  let html = "";
+
+  if (state.page === 1) {
+    html += '<button data-page="' + (state.page - 1) + '" disabled>&lt; Prev</button>';
+  } else {
+    html += '<button data-page="' + (state.page - 1) + '">&lt; Prev</button>';
   }
-  html += `<button data-page="${state.page + 1}" ${state.page === pages ? "disabled" : ""}>Next &gt;</button>`;
+
+  for (let page = 1; page <= pages; page++) {
+    if (page === state.page) {
+      html += '<button data-page="' + page + '" class="active">' + page + "</button>";
+    } else {
+      html += '<button data-page="' + page + '">' + page + "</button>";
+    }
+  }
+
+  if (state.page === pages) {
+    html += '<button data-page="' + (state.page + 1) + '" disabled>Next &gt;</button>';
+  } else {
+    html += '<button data-page="' + (state.page + 1) + '">Next &gt;</button>';
+  }
+
   $("pagination").innerHTML = html;
 }
 
 function fillCategoryDropdown() {
-  const cats = [...new Set(state.missions.map((m) => m.category))].sort();
-  $("fCategory").innerHTML = '<option value="">All Categories</option>' +
-    cats.map((c) => `<option>${esc(c)}</option>`).join("");
+  const categories = state.missions.map(function (mission) {
+    return mission.category;
+  });
+
+  const uniqueCategories = [];
+  categories.forEach(function (category) {
+    if (!uniqueCategories.includes(category)) {
+      uniqueCategories.push(category);
+    }
+  });
+  uniqueCategories.sort();
+
+  let options = '<option value="">All Categories</option>';
+  uniqueCategories.forEach(function (category) {
+    options += `<option>${esc(category)}</option>`;
+  });
+  $("fCategory").innerHTML = options;
 }
 
 function applyRole() {
   const isAdmin = state.me.role === "admin";
-  document.querySelectorAll("[data-admin]").forEach((el) => { el.hidden = !isAdmin; });
+
+  document.querySelectorAll("[data-admin]").forEach(function (element) {
+    element.hidden = !isAdmin;
+  });
 }
 
 function wireEvents() {
-  ["fSearch", "fCategory", "fDifficulty", "fStatus"].forEach((id) =>
-    $(id).addEventListener("input", () => { state.page = 1; renderRows(); }));
+  const filterIds = ["fSearch", "fCategory", "fDifficulty", "fStatus"];
 
-  $("pagination").addEventListener("click", (e) => {
-    const btn = e.target.closest("button[data-page]");
-    if (!btn || btn.disabled) return;
-    state.page = Number(btn.dataset.page);
+  filterIds.forEach(function (id) {
+    $(id).addEventListener("input", function () {
+      state.page = 1;
+      renderRows();
+    });
+  });
+
+  $("pagination").addEventListener("click", function (event) {
+    const button = event.target.closest("button[data-page]");
+
+    if (!button || button.disabled) {
+      return;
+    }
+
+    state.page = Number(button.dataset.page);
     renderRows();
   });
 
-  $("btnReset").addEventListener("click", () => {
-    ["fSearch", "fCategory", "fDifficulty", "fStatus"].forEach((id) => { $(id).value = ""; });
+  $("btnReset").addEventListener("click", function () {
+    filterIds.forEach(function (id) {
+      $(id).value = "";
+    });
     state.page = 1;
     renderRows();
   });
 
-  $("btnCreate").addEventListener("click", () => {
+  $("btnCreate").addEventListener("click", function () {
     window.location.href = "create.html?type=mission";
   });
 }
 
-(async function init() {
-  state.me = CIPHER.me(await getJSON(API.me, MOCK.me));
-  state.missions = CIPHER.missions(await getJSON(API.missions, MOCK.missions));
+function init() {
+  state.me = CIPHER.me();
+  state.missions = CIPHER.missions();
 
   applyRole();
   fillCategoryDropdown();
   renderStats();
   renderRows();
   wireEvents();
-})();
+}
+
+init();

@@ -1,114 +1,119 @@
-const API = {
-  me:    "/api/me",    
-  items: "/api/shop",   
-  buy:   "/api/buy",   
+const state = {
+  me: null,
+  items: []
 };
 
-const MOCK_ME = CIPHER_DATA.me;
-const MOCK_ITEMS = [
-  { id: 1, name: "Ghost Protocol", effect: "Hide your activity and solve attempts from public logs for 24 hours.", price: 40 },
-  { id: 2, name: "Mission Skip",   effect: "Unlock the next mission without completing the prerequisite challenge.", price: 50 },
-  { id: 3, name: "XP Boost",       effect: "Earn 25% bonus XP on your next three verified mission solves.", price: 30 },
-  { id: 4, name: "Bounty Rush",    effect: "Reduce cool-down time between consecutive bounty submissions.", price: 25 },
-];
-
 const $ = (id) => document.getElementById(id);
-const state = { me: null, items: [] };
-let usingMock = false;   
 
-function esc(s) {
-  return String(s).replace(/[&<>"']/g, (c) =>
-    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-}
-
-async function getJSON(url, fallback) {
-  try {
-    const res = await fetch(url, { credentials: "same-origin" });
-    if (!res.ok) throw new Error(res.status);
-    return await res.json();
-  } catch (e) {
-    console.warn("API failed, using mock for", url, e);
-    usingMock = true;
-    return fallback;
-  }
+function esc(value) {
+  return String(value).replace(/[&<>"']/g, function (character) {
+    const entities = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    };
+    return entities[character];
+  });
 }
 
 function renderBalance() {
-  const text = `${state.me.coins} Coins`;
+  const coinText = state.me.coins + " Coins";
+
   $("navAgent").textContent = state.me.name;
-  $("navCoins").textContent = text;
-  $("balance").textContent = text;
+  $("navCoins").textContent = coinText;
+  $("balance").textContent = coinText;
 }
 
 function renderRows() {
-  $("shopRows").innerHTML = state.items.length
-    ? state.items.map((it) => {
-        const cantAfford = it.price > state.me.coins;
-        const unavailable = !CIPHER.isLoggedIn() ? "Log in to buy" : cantAfford ? "Not enough coins" : "";
-        return `
-        <tr>
-          <td class="item-name">${esc(it.name)}</td>
-          <td class="muted">${esc(it.effect)}</td>
-          <td class="num mono">${esc(it.price)} Coins</td>
-          <td class="num">
-            <button class="btn btn-primary btn-buy" data-id="${esc(it.id)}"
-              ${unavailable ? `disabled title="${unavailable}"` : ""}>Buy</button>
-          </td>
-        </tr>`;
-      }).join("")
-    : `<tr><td colspan="4" class="muted">The shop is empty right now.</td></tr>`;
+  if (state.items.length === 0) {
+    $("shopRows").innerHTML =
+      '<tr><td colspan="4" class="muted">The shop is empty right now.</td></tr>';
+    return;
+  }
+
+  $("shopRows").innerHTML = state.items.map(function (item) {
+    const cantAfford = item.price > state.me.coins;
+    let unavailable = "";
+
+    if (!CIPHER.isLoggedIn()) {
+      unavailable = "Log in to buy";
+    } else if (cantAfford) {
+      unavailable = "Not enough coins";
+    }
+
+    let disabledText = "";
+    if (unavailable) {
+      disabledText = `disabled title="${unavailable}"`;
+    }
+
+    return `
+      <tr>
+        <td class="item-name">${esc(item.name)}</td>
+        <td class="muted">${esc(item.effect)}</td>
+        <td class="num mono">${esc(item.price)} Coins</td>
+        <td class="num">
+          <button class="btn btn-primary btn-buy" data-id="${esc(item.id)}" ${disabledText}>Buy</button>
+        </td>
+      </tr>`;
+  }).join("");
 }
 
-function showMsg(ok, text) {
+function showMsg(ok, message) {
   const box = $("shopMsg");
-  box.className = "alert " + (ok ? "alert-success" : "alert-error");
-  box.textContent = text;
+
+  if (ok) {
+    box.className = "alert alert-success";
+  } else {
+    box.className = "alert alert-error";
+  }
+
+  box.textContent = message;
   box.hidden = false;
 }
 
-
-async function buy(itemId) {
+function buy(itemId) {
   if (!CIPHER.isLoggedIn()) {
-    return showMsg(false, "Log in to buy items.");
+    showMsg(false, "Log in to buy items.");
+    return;
   }
 
-  const item = state.items.find((i) => String(i.id) === String(itemId));
-  if (!item) return;
+  const item = state.items.find(function (shopItem) {
+    return String(shopItem.id) === String(itemId);
+  });
 
-  if (usingMock) {
-
-    if (state.me.coins < item.price) return showMsg(false, "Not enough coins.");
-    state.me.coins -= item.price;
-    showMsg(true, `Purchased ${item.name}.`);
-  } else {
-    try {
-      const res = await fetch(API.buy, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "same-origin",
-        body: JSON.stringify({ itemId: item.id }),
-      });
-      const data = await res.json();
-      if (!res.ok || !data.ok) return showMsg(false, data.message || "Purchase failed.");
-      state.me.coins = data.coins;                
-      showMsg(true, data.message || `Purchased ${item.name}.`);
-    } catch (e) {
-      return showMsg(false, "Could not reach the server. Try again.");
-    }
+  if (!item) {
+    return;
   }
+
+  if (state.me.coins < item.price) {
+    showMsg(false, "Not enough coins.");
+    return;
+  }
+
+  state.me.coins = state.me.coins - item.price;
+  showMsg(true, "Purchased " + item.name + ".");
   renderBalance();
   renderRows();
 }
 
+function init() {
+  state.me = CIPHER.me();
+  state.items = CIPHER_DATA.shop;
 
-(async function init() {
-  state.me = CIPHER.me(await getJSON(API.me, MOCK_ME));
-  state.items = await getJSON(API.items, MOCK_ITEMS);
   renderBalance();
   renderRows();
 
-  $("shopRows").addEventListener("click", (e) => {
-    const btn = e.target.closest(".btn-buy");
-    if (btn && !btn.disabled) buy(btn.dataset.id);
+  $("shopRows").addEventListener("click", function (event) {
+    const button = event.target.closest(".btn-buy");
+
+    if (!button || button.disabled) {
+      return;
+    }
+
+    buy(button.dataset.id);
   });
-})();
+}
+
+init();
