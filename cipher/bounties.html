@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bounties | CIPHER</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/extra.css">
+  <link rel="stylesheet" href="css/dark.css"> 
+</head>
+<body class="theme-dark">
+
+  <header class="site-header">
+    <div class="container row">
+      <div class="header-left">
+        <a class="brand" href="index.html">CIPHER</a>
+        <nav class="site-nav">
+          <a href="missions.html">Missions</a>
+          <a class="active" href="blackmarket.html">Black Market</a>
+          <a href="logs.html">Log</a>
+          <a href="leaderboard.html">Leaderboard</a>
+          <a href="profile.html">Profile</a>
+        </nav>
+      </div>
+      <div class="mono">
+        Agent <span id="navAgent">-</span>
+        <span class="dot">&middot;</span>
+        <span class="accent" id="navCoins">0 Coins</span>
+        <a href="login.html?logout=1" class="nav-logout">Log out</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="subnav">
+    <nav class="container site-nav mono">
+      <a href="blackmarket.html">Overview</a>
+      <a href="shop.html">Shop</a>
+      <a class="active" href="bounties.html">Bounties</a>
+    </nav>
+  </div>
+
+  <main class="container page">
+    <div class="row market-head center">
+      <h1>Bounties</h1>
+      <div class="head-actions">
+        <div class="balance plain mono">Balance: <strong class="accent" id="balance">0 Coins</strong></div>
+        <a class="btn btn-primary" href="create.html?type=bounty">+ Post bounty</a>
+      </div>
+    </div>
+
+
+    <div class="toolbar row section">
+      <div class="tabs" id="tabs">
+        <button type="button" class="active" data-tab="browse">Browse bounties</button>
+        <button type="button" data-tab="mine">My bounties</button>
+      </div>
+      <div class="toolbar-right">
+        <label class="search-box">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <input id="fSearch" type="search" placeholder="Search bounties..." aria-label="Search bounties">
+        </label>
+        <select class="form-control" id="fStatus" aria-label="Filter by status">
+          <option value="">All statuses</option>
+          <option value="open">Open</option>
+          <option value="claimed">Claimed</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="table-wrap section">
+      <table class="data-table shop-table bounty-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Posted by</th>
+            <th>Reward</th>
+            <th>Status</th>
+            <th class="num">Action</th>
+          </tr>
+        </thead>
+        <tbody id="bountyRows"></tbody>
+      </table>
+      <div class="table-foot row mono small">
+        <span id="showing"></span>
+        <div class="pagination" id="pagination"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-line">
+      <strong>CIPHER</strong>
+      <span class="dot">&middot;</span><a href="#">About</a>
+      <span class="dot">&middot;</span><a href="#">Rules</a>
+      <span class="push">Academic Competitive Challenge Environment</span>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/missionfiles/bounties.js"></script>
+</body>
+</html>

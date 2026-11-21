@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bounty | CIPHER</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/extra.css">
+  <link rel="stylesheet" href="css/dark.css">
+</head>
+<body data-type="bounty">
+
+  <header class="site-header">
+    <div class="container row">
+      <div class="header-left">
+        <a class="brand" href="index.html">CIPHER</a>
+        <nav class="site-nav">
+          <a href="missions.html">Missions</a>
+          <a class="active" href="blackmarket.html">Black Market</a>
+          <a href="logs.html">Log</a>
+          <a href="leaderboard.html">Leaderboard</a>
+          <a href="profile.html">Profile</a>
+        </nav>
+      </div>
+      <div class="mono muted">
+        AGENT <span id="navAgent">-</span>
+        <a href="login.html?logout=1" class="nav-logout">Log out</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container page">
+
+    <div class="subbar row">
+      <a href="bounties.html">&larr; Back to Bounties</a>
+    </div>
+
+    <div id="missionError" class="alert alert-error" hidden></div>
+
+    <article id="missionBody" hidden>
+      <h1 id="mTitle"></h1>
+      <p class="muted" id="mMeta"></p>
+      <p class="mission-desc" id="mDesc"></p>
+
+      <div class="section">
+        <button class="btn btn-primary" id="btnClaim" type="button">Claim bounty</button>
+        <div id="claimResult" class="alert section" hidden></div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container row">
+      <strong>CIPHER</strong>
+      <nav class="site-nav"><a href="#">About</a><a href="#">Rules</a></nav>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/missionfiles/mission.js"></script>
+</body>
+</html>

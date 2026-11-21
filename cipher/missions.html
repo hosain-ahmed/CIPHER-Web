@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Missions | CIPHER</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/extra.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container row">
+    <div class="header-left">
+        <a class="brand" href="index.html">CIPHER</a>
+        <nav class="site-nav">
+            <a class="active" href="missions.html">Missions</a>
+            <a href="blackmarket.html">Black Market</a>
+            <a href="logs.html">Log</a>
+            <a href="leaderboard.html">Leaderboard</a>
+            <a href="profile.html">Profile</a>
+        </nav>
+    </div>
+      <div class="mono muted">
+        AGENT <span id="navAgent">-</span>
+        <a href="login.html?logout=1" class="nav-logout">Log out</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container page">
+    <section class="panel row">
+      <div>
+        <div class="mono muted small">CIPHER // DIRECTORY</div>
+        <h1>Missions</h1>
+        <p>Solve challenges across cryptography, web security, binary analysis, and discrete logic.
+           All submissions are scored strictly against deterministic test suites.</p>
+      </div>
+      <div class="agent-stats mono small" id="agentStats"></div>
+    </section>
+
+
+    <section class="panel section">
+      <div class="filters">
+        <input class="form-control search-field" id="fSearch" type="search" placeholder="Search by title or ID...">
+        <select class="form-control" id="fCategory"><option value="">All Categories</option></select>
+        <select class="form-control" id="fDifficulty">
+          <option value="">All Difficulties</option>
+          <option>Easy</option><option>Medium</option><option>Hard</option>
+        </select>
+        <select class="form-control" id="fStatus">
+          <option value="">All Status</option>
+          <option value="solved">Solved</option>
+          <option value="unsolved">Unsolved</option>
+        </select>
+
+
+        <button class="btn" id="btnReset">Reset</button>
+        <button class="btn btn-primary" id="btnCreate" data-admin hidden>+ Create Mission</button>
+      </div>
+    </section>
+
+
+    <section class="section">
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th><th>Challenge title</th><th>Category</th><th>Difficulty</th>
+              <th class="num">XP</th><th class="num">Coins</th><th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="missionRows"></tbody>
+        </table>
+        <div class="table-foot row mono small">
+          <span id="showing"></span>
+          <div class="pagination" id="pagination"></div>
+        </div>
+      </div>
+    </section>
+
+ 
+    <section class="section columns" id="infoCards"></section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container row">
+      <div><strong>CIPHER</strong> Academic Challenge Platform</div>
+      <nav class="site-nav"><a href="#">About</a><a href="#">Format Standards</a><a href="#">Rules</a></nav>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/missionfiles/missions.js"></script>
+</body>
+</html>
