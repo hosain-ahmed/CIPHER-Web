@@ -1,4 +1,3 @@
-// Leaderboard Search
 function searchAgent() {
 
     let search = document.getElementById("search").value.toLowerCase();
@@ -17,7 +16,6 @@ function searchAgent() {
 }
 
 
-// Agents Search and Filter
 function searchUser() {
 
     let search = document.getElementById("search").value.toLowerCase();
@@ -41,13 +39,11 @@ function searchUser() {
 }
 
 
-// Filter by Role
 function filterRole() {
     searchUser();
 }
 
 
-// Add New Agent
 function addUser() {
 
     let name = prompt("Enter codename:");
@@ -73,7 +69,6 @@ function addUser() {
 }
 
 
-// Change Agent Status
 function manageUser(button) {
 
     let row = button.parentElement.parentElement;
@@ -89,7 +84,6 @@ function manageUser(button) {
 }
 
 
-// Activity Log Search and Filter
 function filterLog() {
 
     let search = document.getElementById("search").value.toLowerCase();
@@ -113,7 +107,6 @@ function filterLog() {
 }
 
 
-// Clear Activity Filters
 function clearFilter() {
 
     document.getElementById("search").value = "";
