@@ -147,6 +147,7 @@ function wireClaim(bounty) {
     };
 
     CIPHER.saveBounty(updated);
+    CIPHER.addLog("Bounty Claimed", bounty.title, 0, 0);
     renderBounty(updated);
     showAlert("claimResult", true, "Bounty claimed. It is now marked as claimed in the bounty list.");
   };
@@ -188,8 +189,10 @@ function wireMission(mission) {
 
     if (correct) {
       CIPHER.markSolved(mission.id);
+      CIPHER.addLog("Mission Solved", mission.title, mission.xp, mission.coins);
       showAlert("result", true, "Correct! +" + mission.xp + " XP, +" + mission.coins + " coins.");
     } else {
+      CIPHER.addLog("Mission Failed", mission.title, 0, 0);
       showAlert("result", false, "Incorrect, try again.");
     }
   });

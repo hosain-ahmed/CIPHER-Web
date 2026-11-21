@@ -174,6 +174,7 @@ function fillMission(mission) {
 function saveItem(item) {
   if (isBounty) {
     CIPHER.saveBounty(item);
+    CIPHER.addLog("Bounty Posted", item.title, 0, 0);
   } else {
     CIPHER.saveMission(item);
   }

@@ -93,6 +93,7 @@ function buy(itemId) {
   }
 
   state.me.coins = state.me.coins - item.price;
+  CIPHER.addLog("Shop Purchase", item.name, 0, -item.price);
   showMsg(true, "Purchased " + item.name + ".");
   renderBalance();
   renderRows();

@@ -362,6 +362,7 @@
         }
         try {
           localStorage.setItem("cipherProfile", JSON.stringify({ fullName, email }));
+          CIPHER.addLog("Profile Updated", "Profile details saved", 0, 0);
           showMessage(profileSaveMsg, "Profile saved locally.", true);
         } catch (e) {
           showMessage(profileSaveMsg, "Could not save the profile.", false);
@@ -384,6 +385,7 @@
           showMessage(passwordMsg, "New passwords do not match.", false);
           return;
         }
+        CIPHER.addLog("Password Updated", "Password changed", 0, 0);
         showMessage(passwordMsg, "Password updated locally for this demo.", true);
         passwordForm.reset();
       });

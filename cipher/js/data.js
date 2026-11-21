@@ -155,6 +155,7 @@ const CIPHER_MISSIONS_KEY = "cipherMissionsV2";
 const CIPHER_BOUNTIES_KEY = "cipherBountiesV2";
 const CIPHER_AUTH_KEY = "cipherLoggedIn";
 const CIPHER_AGENT_KEY = "cipherAgent";
+const CIPHER_LOG_KEY = "cipherActivityLog";
 
 function readData(key, fallback) {
   try {
@@ -235,9 +236,11 @@ function isLoggedIn() {
 function login(codename) {
   writeText(CIPHER_AUTH_KEY, "1");
   writeText(CIPHER_AGENT_KEY, codename);
+  addLog("Login", "Agent logged in", 0, 0);
 }
 
 function logout() {
+  addLog("Logout", "Agent logged out", 0, 0);
   removeText(CIPHER_AUTH_KEY);
   removeText(CIPHER_AGENT_KEY);
   removeText("cipherRole");
@@ -288,6 +291,39 @@ function markSolved(id) {
     solved.push(value);
     writeData(key, solved);
   }
+}
+
+function addLog(event, details, xp, coins) {
+  if (!isLoggedIn()) {
+    return;
+  }
+
+  const me = getCurrentUser();
+  const entries = readData(CIPHER_LOG_KEY, []);
+
+  entries.unshift({
+    time: new Date().toISOString(),
+    agent: me.name,
+    event: event,
+    details: details,
+    xp: xp,
+    coins: coins
+  });
+
+  writeData(CIPHER_LOG_KEY, entries.slice(0, 100));
+}
+
+function getHistory() {
+  if (!isLoggedIn()) {
+    return [];
+  }
+
+  const me = getCurrentUser();
+  const entries = readData(CIPHER_LOG_KEY, []);
+
+  return entries.filter(function (entry) {
+    return entry.agent === me.name;
+  });
 }
 
 function updateAuthLinks() {
@@ -355,7 +391,9 @@ window.CIPHER = {
   },
 
   isSolved: isSolved,
-  markSolved: markSolved
+  markSolved: markSolved,
+  addLog: addLog,
+  history: getHistory
 };
 
 updateAuthLinks();

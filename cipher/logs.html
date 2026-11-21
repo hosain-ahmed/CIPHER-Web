@@ -32,97 +32,44 @@
 </header>
 
 <h1>Activity Log</h1>
-<p class="info">Recent activities performed by agents.</p>
+<p class="info">Your recent activity.</p>
 
-<!-- Search Box -->
-<input type="text" id="search"
-       placeholder="Search agent..."
-       onkeyup="filterLog()">
+<input type="text" id="search" placeholder="Search activity...">
 
-<!-- Event Filter -->
-<select id="event" onchange="filterLog()">
+<select id="event">
     <option value="All">All Events</option>
+    <option value="Login">Login</option>
+    <option value="Logout">Logout</option>
     <option value="Mission Solved">Mission Solved</option>
     <option value="Mission Failed">Mission Failed</option>
-    <option value="Login">Login</option>
-    <option value="Registration">Registration</option>
+    <option value="Bounty Posted">Bounty Posted</option>
+    <option value="Bounty Claimed">Bounty Claimed</option>
+    <option value="Shop Purchase">Shop Purchase</option>
+    <option value="Profile Updated">Profile Updated</option>
+    <option value="Password Updated">Password Updated</option>
 </select>
 
-<!-- Clear Button -->
-<button onclick="clearFilter()">Clear Filter</button>
+<button id="clearFilter">Clear Filter</button>
 
-<!-- Activity Table -->
 <table id="logs">
-    <tr>
-        <th>Time</th>
-        <th>Agent</th>
-        <th>Event</th>
-        <th>Details</th>
-        <th>XP</th>
-        <th>Coins</th>
-    </tr>
-
-    <tr>
-        <td>10:30 AM</td>
-        <td>zero_alex</td>
-        <td>Mission Solved</td>
-        <td>Caesar's First Shift</td>
-        <td>+100</td>
-        <td>+50</td>
-    </tr>
-
-    <tr>
-        <td>10:20 AM</td>
-        <td>byte_runner</td>
-        <td>Mission Solved</td>
-        <td>Binary Basics</td>
-        <td>+150</td>
-        <td>+75</td>
-    </tr>
-
-    <tr>
-        <td>10:15 AM</td>
-        <td>syn_ack</td>
-        <td>Login</td>
-        <td>Agent logged in</td>
-        <td>0</td>
-        <td>0</td>
-    </tr>
-
-    <tr>
-        <td>10:05 AM</td>
-        <td>new_agent</td>
-        <td>Registration</td>
-        <td>New account created</td>
-        <td>0</td>
-        <td>0</td>
-    </tr>
-
-    <tr>
-        <td>09:45 AM</td>
-        <td>null_pointer</td>
-        <td>Mission Failed</td>
-        <td>Hidden Message</td>
-        <td>0</td>
-        <td>0</td>
-    </tr>
-
-    <tr>
-        <td>09:30 AM</td>
-        <td>u21_raskar</td>
-        <td>Mission Solved</td>
-        <td>Network Puzzle</td>
-        <td>+200</td>
-        <td>+100</td>
-    </tr>
-
+    <thead>
+        <tr>
+            <th>Time</th>
+            <th>Agent</th>
+            <th>Event</th>
+            <th>Details</th>
+            <th>XP</th>
+            <th>Coins</th>
+        </tr>
+    </thead>
+    <tbody id="logRows"></tbody>
 </table>
 
 <footer>
     CIPHER | Web Technologies Project
 </footer>
 <script src="js/data.js"></script>
-<script src="js/admin.js"></script>
+<script src="js/logs.js"></script>
 
 </body>
 </html>
