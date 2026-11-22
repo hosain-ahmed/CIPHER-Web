@@ -6,7 +6,6 @@
     <title>CIPHER Agents</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/extra.css">
-    <link rel="stylesheet" href="css/admin.css">
 </head>
 <body data-admin-page>
 
@@ -31,36 +30,36 @@
     </div>
 </header>
 
-<h1>Agents</h1>
+<main class="container page">
+    <h1>Agents</h1>
 
-<!-- Add User Button -->
-<button onclick="addUser()">+ Add User</button>
+    <section class="filters section">
+        <button class="btn btn-primary" onclick="addUser()">+ Add User</button>
+        <input class="form-control search-field" type="text" id="search"
+               placeholder="Search codename..."
+               onkeyup="searchUser()">
+        <select class="form-control" id="role" onchange="filterRole()">
+            <option value="All">All Roles</option>
+            <option value="Agent">Agent</option>
+            <option value="Admin">Admin</option>
+        </select>
+    </section>
 
-<!-- Search -->
-<input type="text" id="search"
-       placeholder="Search codename..."
-       onkeyup="searchUser()">
-
-<!-- Role Filter -->
-<select id="role" onchange="filterRole()">
-    <option value="All">All Roles</option>
-    <option value="Agent">Agent</option>
-    <option value="Admin">Admin</option>
-</select>
-
-<!-- Agents Table -->
-<table id="agents">
-    <thead>
-        <tr>
-            <th>Codename</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody id="agentRows"></tbody>
-</table>
+    <div class="table-wrap section">
+        <table class="data-table" id="agents">
+            <thead>
+                <tr>
+                    <th>Codename</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="agentRows"></tbody>
+        </table>
+    </div>
+</main>
 
 <footer class="site-footer">
   <div class="container row">

@@ -6,7 +6,6 @@
     <title>CIPHER Leaderboard</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/extra.css">
-    <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
 
@@ -31,40 +30,43 @@
     </div>
 </header>
 
-<h1>Leaderboard</h1>
-<p class="info">Agent rankings based on total XP earned.</p>
+<main class="container page">
+    <h1>Leaderboard</h1>
+    <p class="muted">Agent rankings based on total XP earned.</p>
 
-<!-- Summary -->
-<div class="cards">
-    <div class="card">
-        <h1 id="leaderboardAgentCount">0</h1>
-        <p>Total Agents</p>
+    <section class="columns section">
+        <div class="info-card">
+            <div class="mono muted small">TOTAL AGENTS</div>
+            <h3 id="leaderboardAgentCount">0</h3>
+        </div>
+
+        <div class="info-card">
+            <div class="mono muted small">MINIMUM XP</div>
+            <h3 id="leaderboardMinXp">0 XP</h3>
+        </div>
+    </section>
+
+    <div class="filters section">
+        <input class="form-control search-field" type="text" id="search"
+               placeholder="Search agent..."
+               onkeyup="searchAgent()">
     </div>
 
-    <div class="card">
-        <h1 id="leaderboardMinXp">0 XP</h1>
-        <p>Minimum XP</p>
+    <div class="table-wrap section">
+        <table class="data-table" id="leaderboard">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Agent</th>
+                    <th>Tier</th>
+                    <th>Total XP</th>
+                    <th>Missions</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboardRows"></tbody>
+        </table>
     </div>
-</div>
-
-<!-- Search -->
-<input type="text" id="search"
-       placeholder="Search agent..."
-       onkeyup="searchAgent()">
-
-<!-- Leaderboard Table -->
-<table id="leaderboard">
-    <thead>
-        <tr>
-            <th>Rank</th>
-            <th>Agent</th>
-            <th>Tier</th>
-            <th>Total XP</th>
-            <th>Missions</th>
-        </tr>
-    </thead>
-    <tbody id="leaderboardRows"></tbody>
-</table>
+</main>
 
 <footer class="site-footer">
   <div class="container row">

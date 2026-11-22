@@ -6,7 +6,6 @@
     <title>CIPHER Dashboard</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/extra.css">
-    <link rel="stylesheet" href="css/admin.css">
 </head>
 <body data-admin-page>
 
@@ -31,51 +30,56 @@
     </div>
 </header>
 
-<h1>Dashboard</h1>
+<main class="container page">
+    <h1>Dashboard</h1>
 
-<!-- Dashboard Cards -->
-<div class="cards">
-    <div class="card">
-        <h1 id="totalAgents">0</h1>
-        <p>Total Agents</p>
+    <section class="columns section">
+        <div class="info-card">
+            <div class="mono muted small">TOTAL AGENTS</div>
+            <h3 id="totalAgents">0</h3>
+        </div>
+
+        <div class="info-card">
+            <div class="mono muted small">TOTAL MISSIONS</div>
+            <h3 id="totalMissions">0</h3>
+        </div>
+
+        <div class="info-card">
+            <div class="mono muted small">MISSIONS SOLVED TODAY</div>
+            <h3 id="solvedToday">0</h3>
+        </div>
+    </section>
+
+    <h2 class="section">Recent Activity</h2>
+
+    <div class="table-wrap">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Agent</th>
+                    <th>Activity</th>
+                </tr>
+            </thead>
+            <tbody id="recentActivity"></tbody>
+        </table>
     </div>
 
-    <div class="card">
-        <h1 id="totalMissions">0</h1>
-        <p>Total Missions</p>
+    <h2 class="section">Top Agents</h2>
+
+    <div class="table-wrap">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Agent</th>
+                    <th>XP</th>
+                </tr>
+            </thead>
+            <tbody id="topAgents"></tbody>
+        </table>
     </div>
-
-    <div class="card">
-        <h1 id="solvedToday">0</h1>
-        <p>Missions Solved Today</p>
-    </div>
-</div>
-
-<h2>Recent Activity</h2>
-
-<table>
-    <thead>
-        <tr>
-            <th>Time</th>
-            <th>Agent</th>
-            <th>Activity</th>
-        </tr>
-    </thead>
-    <tbody id="recentActivity"></tbody>
-</table>
-
-<h2>Top Agents</h2>
-
-<table>
-    <thead>
-        <tr>
-            <th>Rank</th>
-            <th>Agent</th>
-            <th>XP</th>
-        </tr>
-    </thead>
-    <tbody id="topAgents"></tbody>
-</table>
+</main>
 
 <footer class="site-footer">
   <div class="container row">

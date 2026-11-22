@@ -44,14 +44,14 @@ function renderAgents() {
         let actionButtons = "";
 
         if (protectedUser) {
-            actionButtons = '<button disabled>Protected</button>';
+            actionButtons = '<button class="btn" disabled>Protected</button>';
         } else {
             const statusLabel = status === "Active" ? "Lock" : "Activate";
             const roleLabel = role === "Admin" ? "Remove Admin" : "Make Admin";
 
             actionButtons =
-                '<button onclick="manageUser(this)">' + statusLabel + "</button> " +
-                '<button onclick="promoteUser(this)">' + roleLabel + "</button>";
+                '<button class="btn" onclick="manageUser(this)">' + statusLabel + "</button> " +
+                '<button class="btn" onclick="promoteUser(this)">' + roleLabel + "</button>";
         }
 
         return `

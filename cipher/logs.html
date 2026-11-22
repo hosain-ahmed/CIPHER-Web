@@ -6,7 +6,6 @@
     <title>CIPHER Activity Log</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/extra.css">
-    <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
 
@@ -31,39 +30,43 @@
     </div>
 </header>
 
-<h1>Activity Log</h1>
-<p class="info">Your recent activity.</p>
+<main class="container page">
+    <h1>Activity Log</h1>
+    <p class="muted">Your recent activity.</p>
 
-<input type="text" id="search" placeholder="Search activity...">
+    <section class="filters section">
+        <input class="form-control search-field" type="text" id="search" placeholder="Search activity...">
+        <select class="form-control" id="event">
+            <option value="All">All Events</option>
+            <option value="Login">Login</option>
+            <option value="Logout">Logout</option>
+            <option value="Mission Solved">Mission Solved</option>
+            <option value="Mission Failed">Mission Failed</option>
+            <option value="Bounty Posted">Bounty Posted</option>
+            <option value="Bounty Claimed">Bounty Claimed</option>
+            <option value="Shop Purchase">Shop Purchase</option>
+            <option value="Profile Updated">Profile Updated</option>
+            <option value="Password Updated">Password Updated</option>
+        </select>
+        <button class="btn" id="clearFilter">Clear Filter</button>
+    </section>
 
-<select id="event">
-    <option value="All">All Events</option>
-    <option value="Login">Login</option>
-    <option value="Logout">Logout</option>
-    <option value="Mission Solved">Mission Solved</option>
-    <option value="Mission Failed">Mission Failed</option>
-    <option value="Bounty Posted">Bounty Posted</option>
-    <option value="Bounty Claimed">Bounty Claimed</option>
-    <option value="Shop Purchase">Shop Purchase</option>
-    <option value="Profile Updated">Profile Updated</option>
-    <option value="Password Updated">Password Updated</option>
-</select>
-
-<button id="clearFilter">Clear Filter</button>
-
-<table id="logs">
-    <thead>
-        <tr>
-            <th>Time</th>
-            <th>Agent</th>
-            <th>Event</th>
-            <th>Details</th>
-            <th>XP</th>
-            <th>Coins</th>
-        </tr>
-    </thead>
-    <tbody id="logRows"></tbody>
-</table>
+    <div class="table-wrap section">
+        <table class="data-table" id="logs">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Agent</th>
+                    <th>Event</th>
+                    <th>Details</th>
+                    <th>XP</th>
+                    <th>Coins</th>
+                </tr>
+            </thead>
+            <tbody id="logRows"></tbody>
+        </table>
+    </div>
+</main>
 
 <footer class="site-footer">
   <div class="container row">
