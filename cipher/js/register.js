@@ -97,12 +97,6 @@ function handleSubmit(event) {
 
   CIPHER.saveUser(newUser);
 
-  try {
-    localStorage.setItem("cipherRegisteredCodename", newUser.codename);
-  } catch (error) {
-    console.warn("Could not save the registered codename", error);
-  }
-
   successMessage.textContent = "Account created. Redirecting to sign in...";
   form.reset();
 
