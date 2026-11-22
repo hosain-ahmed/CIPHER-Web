@@ -4,14 +4,6 @@ const $ = (id) => document.getElementById(id);
 
 let me = null;
 
-function getRole() {
-  return localStorage.getItem("cipherRole");
-}
-
-function setRole(role) {
-  localStorage.setItem("cipherRole", role);
-}
-
 function setText(id, value) {
   const element = $(id);
   if (element) {
@@ -25,13 +17,6 @@ function applyRole() {
   document.querySelectorAll("[data-admin]").forEach(function (element) {
     element.hidden = !isAdmin;
   });
-
-  const switcher = $("roleSwitch");
-  if (switcher) {
-    switcher.querySelectorAll("button").forEach(function (button) {
-      button.classList.toggle("active", button.dataset.role === me.role);
-    });
-  }
 }
 
 function showError(message) {
@@ -241,13 +226,6 @@ function init() {
   setText("navAgent", me.name);
   applyRole();
 
-  if (!CIPHER.isLoggedIn()) {
-    const switcher = $("roleSwitch");
-    if (switcher) {
-      switcher.hidden = true;
-    }
-  }
-
   if (!id) {
     showError("No " + TYPE + " selected. Go back and pick one.");
     return;
@@ -257,20 +235,6 @@ function init() {
     initBounty(id);
   } else {
     initMission(id);
-  }
-
-  const switcher = $("roleSwitch");
-  if (switcher && CIPHER.isLoggedIn()) {
-    switcher.addEventListener("click", function (event) {
-      const button = event.target.closest("button[data-role]");
-      if (!button) {
-        return;
-      }
-
-      me.role = button.dataset.role;
-      setRole(me.role);
-      applyRole();
-    });
   }
 }
 

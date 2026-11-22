@@ -26,7 +26,7 @@ function checkCodename() {
     return setError(codename, "Use 3-16 letters, numbers or underscores.");
   }
 
-  if (takenCodenames.includes(value.toLowerCase())) {
+  if (takenCodenames.includes(value.toLowerCase()) || CIPHER.findUser(value)) {
     codenameStatus.textContent = "TAKEN";
     codenameStatus.classList.add("bad");
     return setError(codename, "This codename is already taken.");
@@ -88,8 +88,12 @@ function handleSubmit(event) {
   const newUser = {
     codename: codename.value.trim(),
     fullName: fullName.value.trim(),
-    email: email.value.trim()
+    email: email.value.trim(),
+    role: "user",
+    status: "Active"
   };
+
+  CIPHER.saveUser(newUser);
 
   try {
     localStorage.setItem("cipherRegisteredCodename", newUser.codename);

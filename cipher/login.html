@@ -148,13 +148,13 @@
         
         <div class="form-group">
           <label><span>CODENAME</span><small>ASCII_ID</small></label>
-          <input type="text" id="codenameInput" value="zero_trace" required>
+          <input type="text" id="codenameInput" value="admin" required>
         </div>
 
         <div class="form-group">
           <label><span>PASSWORD</span><small>SHA256</small></label>
           <div class="input-box">
-            <input type="password" id="passInput" value="123456" required>
+            <input type="password" id="passInput" value="admin123" required>
             <span class="eye-icon" onclick="togglePass()">👁</span>
           </div>
         </div>
@@ -206,7 +206,14 @@
         document.getElementById("errorBox").style.display = "block";
         return;
       }
-      if (window.CIPHER) CIPHER.login(codename.value.trim());
+
+      const success = window.CIPHER && CIPHER.login(codename.value.trim(), password.value);
+
+      if (!success) {
+        document.getElementById("errorBox").style.display = "block";
+        return;
+      }
+
       window.location.href = "missions.html";
     }
 

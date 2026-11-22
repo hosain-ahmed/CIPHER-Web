@@ -50,61 +50,16 @@
 
 <!-- Agents Table -->
 <table id="agents">
-    <tr>
-        <th>Codename</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Status</th>
-        <th>Action</th>
-    </tr>
-
-    <tr>
-        <td>zero_alex</td>
-        <td>a.wright@university.edu</td>
-        <td>Agent</td>
-        <td>Active</td>
-        <td><button onclick="manageUser(this)">Manage</button></td>
-    </tr>
-
-    <tr>
-        <td>u21_raskar</td>
-        <td>p.raskar@cs.edu</td>
-        <td>Agent</td>
-        <td>Active</td>
-        <td><button onclick="manageUser(this)">Manage</button></td>
-    </tr>
-
-    <tr>
-        <td>byte_runner</td>
-        <td>m.vance@tech.edu</td>
-        <td>Agent</td>
-        <td>Active</td>
-        <td><button onclick="manageUser(this)">Manage</button></td>
-    </tr>
-
-    <tr>
-        <td>syn_ack</td>
-        <td>e.cole@university.edu</td>
-        <td>Agent</td>
-        <td>Active</td>
-        <td><button onclick="manageUser(this)">Manage</button></td>
-    </tr>
-
-    <tr>
-        <td>shadow_byte</td>
-        <td>temp_mail_88@proton.me</td>
-        <td>Agent</td>
-        <td>Locked</td>
-        <td><button onclick="manageUser(this)">Manage</button></td>
-    </tr>
-
-    <tr>
-        <td>staff_admin</td>
-        <td>admin@cipher.platform</td>
-        <td>Admin</td>
-        <td>Active</td>
-        <td><button onclick="manageUser(this)">Manage</button></td>
-    </tr>
+    <thead>
+        <tr>
+            <th>Codename</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="agentRows"></tbody>
 </table>
 
 <footer class="site-footer">

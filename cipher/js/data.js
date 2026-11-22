@@ -1,6 +1,19 @@
 window.CIPHER_DATA = {
   me: { name: "0xK3Y_N0D3", xp: 0, coins: 100 },
 
+  admin: { codename: "admin", password: "admin123" },
+
+  users: [
+    { codename: "admin", fullName: "System Administrator", email: "admin@cipher.local", role: "admin", status: "Active" },
+    { codename: "0xK3Y_N0D3", fullName: "Demo Agent", email: "demo@cipher.local", role: "user", status: "Active" },
+    { codename: "zero_alex", fullName: "Alex Wright", email: "a.wright@university.edu", role: "user", status: "Active" },
+    { codename: "u21_raskar", fullName: "Priya Raskar", email: "p.raskar@cs.edu", role: "user", status: "Active" },
+    { codename: "byte_runner", fullName: "Maya Vance", email: "m.vance@tech.edu", role: "user", status: "Active" },
+    { codename: "syn_ack", fullName: "Evan Cole", email: "e.cole@university.edu", role: "user", status: "Active" },
+    { codename: "shadow_byte", fullName: "Temp Mail", email: "temp_mail_88@proton.me", role: "user", status: "Locked" },
+    { codename: "staff_admin", fullName: "Staff Admin", email: "admin@cipher.platform", role: "user", status: "Active" }
+  ],
+
   missions: [
     {
       id: "C-101",
@@ -153,6 +166,7 @@ window.CIPHER_DATA = {
 
 const CIPHER_MISSIONS_KEY = "cipherMissionsV2";
 const CIPHER_BOUNTIES_KEY = "cipherBountiesV2";
+const CIPHER_USERS_KEY = "cipherUsersV1";
 const CIPHER_AUTH_KEY = "cipherLoggedIn";
 const CIPHER_AGENT_KEY = "cipherAgent";
 const CIPHER_LOG_KEY = "cipherActivityLog";
@@ -233,10 +247,71 @@ function isLoggedIn() {
   return readText(CIPHER_AUTH_KEY) === "1";
 }
 
-function login(codename) {
+function findUser(codename) {
+  const users = loadList(CIPHER_USERS_KEY, CIPHER_DATA.users);
+  const value = String(codename).toLowerCase();
+
+  return users.find(function (user) {
+    return user.codename.toLowerCase() === value;
+  });
+}
+
+function saveUser(user) {
+  const users = loadList(CIPHER_USERS_KEY, CIPHER_DATA.users);
+  const value = user.codename.toLowerCase();
+  const index = users.findIndex(function (entry) {
+    return entry.codename.toLowerCase() === value;
+  });
+
+  if (index === -1) {
+    users.push(user);
+  } else {
+    users[index] = user;
+  }
+
+  writeData(CIPHER_USERS_KEY, users);
+}
+
+function login(codename, password) {
+  const name = String(codename).trim();
+  const user = findUser(name);
+  const isBuiltInAdmin = name.toLowerCase() === CIPHER_DATA.admin.codename.toLowerCase();
+
+  if (user && user.status === "Locked") {
+    return false;
+  }
+
+  if (isBuiltInAdmin && password !== CIPHER_DATA.admin.password) {
+    return false;
+  }
+
+  if (!user) {
+    saveUser({
+      codename: name,
+      fullName: name,
+      email: "",
+      role: "user",
+      status: "Active"
+    });
+  }
+
+  if (isBuiltInAdmin) {
+    const adminUser = findUser(CIPHER_DATA.admin.codename) || {
+      codename: CIPHER_DATA.admin.codename,
+      fullName: "System Administrator",
+      email: "admin@cipher.local",
+      role: "admin",
+      status: "Active"
+    };
+    adminUser.role = "admin";
+    adminUser.status = "Active";
+    saveUser(adminUser);
+  }
+
   writeText(CIPHER_AUTH_KEY, "1");
-  writeText(CIPHER_AGENT_KEY, codename);
+  writeText(CIPHER_AGENT_KEY, name);
   addLog("Login", "Agent logged in", 0, 0);
+  return true;
 }
 
 function logout() {
@@ -254,7 +329,9 @@ function getCurrentUser() {
   }
 
   const name = readText(CIPHER_AGENT_KEY) || base.name;
-  const role = readText("cipherRole") || "user";
+  const user = findUser(name);
+  const role = user ? user.role : "user";
+
   return { name: name, xp: base.xp, coins: base.coins, role: role };
 }
 
@@ -362,6 +439,13 @@ window.CIPHER = {
   bounties: function () {
     return loadList(CIPHER_BOUNTIES_KEY, CIPHER_DATA.bounties);
   },
+
+  users: function () {
+    return loadList(CIPHER_USERS_KEY, CIPHER_DATA.users);
+  },
+
+  findUser: findUser,
+  saveUser: saveUser,
 
   findMission: function (id) {
     return CIPHER.missions().find(function (mission) {
