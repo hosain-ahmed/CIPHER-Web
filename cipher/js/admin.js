@@ -103,7 +103,9 @@ function addUser() {
         fullName: name,
         email: email,
         role: "user",
-        status: "Active"
+        status: "Active",
+        xp: 0,
+        coins: 100
     });
 
     renderAgents();
@@ -147,6 +149,115 @@ function promoteUser(button) {
     alert("Role updated!");
 }
 
+function getTier(xp) {
+    if (xp >= 2400) return "Master";
+    if (xp >= 1800) return "Specialist";
+    if (xp >= 400) return "Candidate";
+    if (xp >= 300) return "Pupil";
+    return "Newbie";
+}
+
+function isToday(value) {
+    const date = new Date(value);
+    const today = new Date();
+
+    return date.getFullYear() === today.getFullYear() &&
+        date.getMonth() === today.getMonth() &&
+        date.getDate() === today.getDate();
+}
+
+function formatTime(value) {
+    const date = new Date(value);
+
+    if (isNaN(date.getTime())) {
+        return value;
+    }
+
+    return date.toLocaleString();
+}
+
+function renderDashboard() {
+    const users = CIPHER.users();
+    const missions = CIPHER.missions();
+    const logs = CIPHER.activityLog();
+
+    document.getElementById("totalAgents").textContent = users.length;
+    document.getElementById("totalMissions").textContent = missions.length;
+
+    const solvedToday = logs.filter(function (entry) {
+        return entry.event === "Mission Solved" && isToday(entry.time);
+    });
+    document.getElementById("solvedToday").textContent = solvedToday.length;
+
+    const recent = logs.slice(0, 5);
+
+    if (recent.length === 0) {
+        document.getElementById("recentActivity").innerHTML =
+            '<tr><td colspan="3" class="muted">No activity yet.</td></tr>';
+    } else {
+        document.getElementById("recentActivity").innerHTML = recent.map(function (entry) {
+            return `
+                <tr>
+                    <td>${esc(formatTime(entry.time))}</td>
+                    <td>${esc(entry.agent)}</td>
+                    <td>${esc(entry.event + ": " + entry.details)}</td>
+                </tr>`;
+        }).join("");
+    }
+
+    const topUsers = users.slice().sort(function (a, b) {
+        return (b.xp || 0) - (a.xp || 0);
+    }).slice(0, 3);
+
+    if (topUsers.length === 0) {
+        document.getElementById("topAgents").innerHTML =
+            '<tr><td colspan="3" class="muted">No agents yet.</td></tr>';
+    } else {
+        document.getElementById("topAgents").innerHTML = topUsers.map(function (user, index) {
+            return `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${esc(user.codename)}</td>
+                    <td>${esc(user.xp || 0)}</td>
+                </tr>`;
+        }).join("");
+    }
+}
+
+function renderLeaderboard() {
+    const users = CIPHER.users();
+    const sorted = users.slice().sort(function (a, b) {
+        return (b.xp || 0) - (a.xp || 0);
+    });
+
+    document.getElementById("leaderboardAgentCount").textContent = users.length;
+
+    let minimumXp = 0;
+    if (users.length > 0) {
+        minimumXp = Math.min.apply(null, users.map(function (user) {
+            return user.xp || 0;
+        }));
+    }
+    document.getElementById("leaderboardMinXp").textContent = minimumXp + " XP";
+
+    if (sorted.length === 0) {
+        document.getElementById("leaderboardRows").innerHTML =
+            '<tr><td colspan="5" class="muted">No agents yet.</td></tr>';
+        return;
+    }
+
+    document.getElementById("leaderboardRows").innerHTML = sorted.map(function (user, index) {
+        return `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${esc(user.codename)}</td>
+                <td>${esc(getTier(user.xp || 0))}</td>
+                <td>${esc(user.xp || 0)}</td>
+                <td>${esc(CIPHER.solvedCount(user.codename))}</td>
+            </tr>`;
+    }).join("");
+}
+
 function initAdminHeader() {
     if (document.body.hasAttribute("data-admin-page") &&
         CIPHER.me().role !== "admin") {
@@ -162,5 +273,13 @@ function initAdminHeader() {
 
     if (document.getElementById("agents")) {
         renderAgents();
+    }
+
+    if (document.getElementById("totalAgents")) {
+        renderDashboard();
+    }
+
+    if (document.getElementById("leaderboard")) {
+        renderLeaderboard();
     }
 })();

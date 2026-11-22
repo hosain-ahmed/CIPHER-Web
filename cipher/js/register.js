@@ -90,7 +90,9 @@ function handleSubmit(event) {
     fullName: fullName.value.trim(),
     email: email.value.trim(),
     role: "user",
-    status: "Active"
+    status: "Active",
+    xp: 0,
+    coins: 100
   };
 
   CIPHER.saveUser(newUser);

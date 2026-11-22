@@ -36,17 +36,17 @@
 <!-- Dashboard Cards -->
 <div class="cards">
     <div class="card">
-        <h1>142</h1>
+        <h1 id="totalAgents">0</h1>
         <p>Total Agents</p>
     </div>
 
     <div class="card">
-        <h1>24</h1>
+        <h1 id="totalMissions">0</h1>
         <p>Total Missions</p>
     </div>
 
     <div class="card">
-        <h1>18</h1>
+        <h1 id="solvedToday">0</h1>
         <p>Missions Solved Today</p>
     </div>
 </div>
@@ -54,57 +54,27 @@
 <h2>Recent Activity</h2>
 
 <table>
-    <tr>
-        <th>Time</th>
-        <th>Agent</th>
-        <th>Activity</th>
-    </tr>
-
-    <tr>
-        <td>2 mins ago</td>
-        <td>byte_runner</td>
-        <td>Solved Caesar's First Shift</td>
-    </tr>
-
-    <tr>
-        <td>7 mins ago</td>
-        <td>syn_ack</td>
-        <td>Submitted Solution</td>
-    </tr>
-
-    <tr>
-        <td>15 mins ago</td>
-        <td>new_user_99</td>
-        <td>Created Account</td>
-    </tr>
+    <thead>
+        <tr>
+            <th>Time</th>
+            <th>Agent</th>
+            <th>Activity</th>
+        </tr>
+    </thead>
+    <tbody id="recentActivity"></tbody>
 </table>
 
 <h2>Top Agents</h2>
 
 <table>
-    <tr>
-        <th>Rank</th>
-        <th>Agent</th>
-        <th>XP</th>
-    </tr>
-
-    <tr>
-        <td>1</td>
-        <td>zero_alex</td>
-        <td>2450</td>
-    </tr>
-
-    <tr>
-        <td>2</td>
-        <td>byte_runner</td>
-        <td>2180</td>
-    </tr>
-
-    <tr>
-        <td>3</td>
-        <td>null_pointer</td>
-        <td>1940</td>
-    </tr>
+    <thead>
+        <tr>
+            <th>Rank</th>
+            <th>Agent</th>
+            <th>XP</th>
+        </tr>
+    </thead>
+    <tbody id="topAgents"></tbody>
 </table>
 
 <footer class="site-footer">

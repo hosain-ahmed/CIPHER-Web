@@ -4,14 +4,17 @@ window.CIPHER_DATA = {
   admin: { codename: "admin", password: "admin123" },
 
   users: [
-    { codename: "admin", fullName: "System Administrator", email: "admin@cipher.local", role: "admin", status: "Active" },
-    { codename: "0xK3Y_N0D3", fullName: "Demo Agent", email: "demo@cipher.local", role: "user", status: "Active" },
-    { codename: "zero_alex", fullName: "Alex Wright", email: "a.wright@university.edu", role: "user", status: "Active" },
-    { codename: "u21_raskar", fullName: "Priya Raskar", email: "p.raskar@cs.edu", role: "user", status: "Active" },
-    { codename: "byte_runner", fullName: "Maya Vance", email: "m.vance@tech.edu", role: "user", status: "Active" },
-    { codename: "syn_ack", fullName: "Evan Cole", email: "e.cole@university.edu", role: "user", status: "Active" },
-    { codename: "shadow_byte", fullName: "Temp Mail", email: "temp_mail_88@proton.me", role: "user", status: "Locked" },
-    { codename: "staff_admin", fullName: "Staff Admin", email: "admin@cipher.platform", role: "user", status: "Active" }
+    { codename: "admin", fullName: "System Administrator", email: "admin@cipher.local", role: "admin", status: "Active", xp: 0, coins: 100 },
+    { codename: "0xK3Y_N0D3", fullName: "Demo Agent", email: "demo@cipher.local", role: "user", status: "Active", xp: 0, coins: 100 },
+    { codename: "zero_alex", fullName: "Alex Wright", email: "a.wright@university.edu", role: "user", status: "Active", xp: 2450, coins: 100 },
+    { codename: "u21_raskar", fullName: "Priya Raskar", email: "p.raskar@cs.edu", role: "user", status: "Active", xp: 2180, coins: 100 },
+    { codename: "byte_runner", fullName: "Maya Vance", email: "m.vance@tech.edu", role: "user", status: "Active", xp: 1940, coins: 100 },
+    { codename: "syn_ack", fullName: "Evan Cole", email: "e.cole@university.edu", role: "user", status: "Active", xp: 120, coins: 100 },
+    { codename: "shadow_byte", fullName: "Temp Mail", email: "temp_mail_88@proton.me", role: "user", status: "Locked", xp: 0, coins: 100 },
+    { codename: "staff_admin", fullName: "Staff Admin", email: "admin@cipher.platform", role: "user", status: "Active", xp: 0, coins: 100 },
+    { codename: "null_pointer", fullName: "Null Pointer", email: "null@cipher.local", role: "user", status: "Active", xp: 420, coins: 100 },
+    { codename: "vector_echo", fullName: "Vector Echo", email: "vector@cipher.local", role: "user", status: "Active", xp: 310, coins: 100 },
+    { codename: "cipher_novice", fullName: "Cipher Novice", email: "novice@cipher.local", role: "user", status: "Active", xp: 180, coins: 100 }
   ],
 
   missions: [
@@ -247,8 +250,28 @@ function isLoggedIn() {
   return readText(CIPHER_AUTH_KEY) === "1";
 }
 
+function getUsers() {
+  const saved = loadList(CIPHER_USERS_KEY, CIPHER_DATA.users);
+
+  return saved.map(function (user) {
+    const seed = CIPHER_DATA.users.find(function (entry) {
+      return entry.codename.toLowerCase() === user.codename.toLowerCase();
+    });
+
+    return {
+      codename: user.codename,
+      fullName: user.fullName || (seed ? seed.fullName : user.codename),
+      email: user.email || (seed ? seed.email : ""),
+      role: user.role || (seed ? seed.role : "user"),
+      status: user.status || (seed ? seed.status : "Active"),
+      xp: typeof user.xp === "number" ? user.xp : (seed ? seed.xp : 0),
+      coins: typeof user.coins === "number" ? user.coins : (seed ? seed.coins : 100)
+    };
+  });
+}
+
 function findUser(codename) {
-  const users = loadList(CIPHER_USERS_KEY, CIPHER_DATA.users);
+  const users = getUsers();
   const value = String(codename).toLowerCase();
 
   return users.find(function (user) {
@@ -257,7 +280,7 @@ function findUser(codename) {
 }
 
 function saveUser(user) {
-  const users = loadList(CIPHER_USERS_KEY, CIPHER_DATA.users);
+  const users = getUsers();
   const value = user.codename.toLowerCase();
   const index = users.findIndex(function (entry) {
     return entry.codename.toLowerCase() === value;
@@ -291,7 +314,9 @@ function login(codename, password) {
       fullName: name,
       email: "",
       role: "user",
-      status: "Active"
+      status: "Active",
+      xp: 0,
+      coins: 100
     });
   }
 
@@ -301,7 +326,9 @@ function login(codename, password) {
       fullName: "System Administrator",
       email: "admin@cipher.local",
       role: "admin",
-      status: "Active"
+      status: "Active",
+      xp: 0,
+      coins: 100
     };
     adminUser.role = "admin";
     adminUser.status = "Active";
@@ -331,8 +358,10 @@ function getCurrentUser() {
   const name = readText(CIPHER_AGENT_KEY) || base.name;
   const user = findUser(name);
   const role = user ? user.role : "user";
+  const xp = user && typeof user.xp === "number" ? user.xp : base.xp;
+  const coins = user && typeof user.coins === "number" ? user.coins : base.coins;
 
-  return { name: name, xp: base.xp, coins: base.coins, role: role };
+  return { name: name, xp: xp, coins: coins, role: role };
 }
 
 function getSolvedKey() {
@@ -403,6 +432,35 @@ function getHistory() {
   });
 }
 
+function getAllLogs() {
+  return readData(CIPHER_LOG_KEY, []);
+}
+
+function rewardUser(xp, coins) {
+  if (!isLoggedIn()) {
+    return;
+  }
+
+  const name = readText(CIPHER_AGENT_KEY);
+  const user = findUser(name);
+
+  if (!user) {
+    return;
+  }
+
+  user.xp = (user.xp || 0) + xp;
+  user.coins = (user.coins || 0) + coins;
+  saveUser(user);
+}
+
+function addCoins(amount) {
+  rewardUser(0, amount);
+}
+
+function getSolvedCount(codename) {
+  return readData("cipherSolved:" + codename, []).length;
+}
+
 function updateAuthLinks() {
   const me = getCurrentUser();
   const links = document.querySelectorAll(".nav-logout");
@@ -441,11 +499,15 @@ window.CIPHER = {
   },
 
   users: function () {
-    return loadList(CIPHER_USERS_KEY, CIPHER_DATA.users);
+    return getUsers();
   },
 
   findUser: findUser,
   saveUser: saveUser,
+  rewardUser: rewardUser,
+  addCoins: addCoins,
+  activityLog: getAllLogs,
+  solvedCount: getSolvedCount,
 
   findMission: function (id) {
     return CIPHER.missions().find(function (mission) {

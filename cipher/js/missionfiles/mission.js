@@ -173,7 +173,13 @@ function wireMission(mission) {
     const correct = expected && answer.toUpperCase() === String(expected).toUpperCase();
 
     if (correct) {
+      const alreadySolved = CIPHER.isSolved(mission.id);
+
       CIPHER.markSolved(mission.id);
+      if (!alreadySolved) {
+        CIPHER.rewardUser(mission.xp, mission.coins);
+      }
+
       CIPHER.addLog("Mission Solved", mission.title, mission.xp, mission.coins);
       showAlert("result", true, "Correct! +" + mission.xp + " XP, +" + mission.coins + " coins.");
     } else {
