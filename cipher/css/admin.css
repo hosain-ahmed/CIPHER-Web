@@ -4,6 +4,13 @@ body {
     background: #f5f7fb;
     margin: 0;
     color: #172033;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main{
+    flex:1;
 }
 
 h1, h2 {
@@ -67,13 +74,6 @@ button {
 
 button:hover {
     background: #002780;
-}
-
-footer {
-    background: white;
-    text-align: center;
-    padding: 25px;
-    margin-top: 40px;
 }
 
 /* Leaderboard Page */
